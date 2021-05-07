@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>food-menu</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-list>
+      <ion-item color="light" class="ion-text-center">
+        <ion-avatar slot="start">
+          <img [src]= "data_foodMenu && data_foodMenu[0][5]">
+        </ion-avatar>
+        <ion-label> {{data_foodMenu && data_foodMenu[0][1]}} </ion-label>
+      </ion-item>
+      <ion-item color="light" class="ion-text-center">
+        <ion-avatar slot="start">
+          <img [src]= "data_foodMenu && data_foodMenu[1][5]">
+        </ion-avatar>
+        <ion-label> {{data_foodMenu && data_foodMenu[1][1]}} </ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+</ion-content>

@@ -1,0 +1,7 @@
+{
+  "name": "foodNTUST",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
