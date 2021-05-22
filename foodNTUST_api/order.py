@@ -5,6 +5,7 @@ import datetime
 import time
 import json
 
+import pymysql
 #requests
 import requests
 from requests.auth import HTTPBasicAuth
@@ -14,6 +15,72 @@ from termcolor import colored
 #str -> ObjectID
 from bson import ObjectId
 
+class OrderFood:
+	"""docstring"""
+	def __init__(self):
+		self.fun_Name = "Order_Food"
+
+	def on_post(self,req,resp):
+		try:
+			tmp = req.stream.read()
+			print(colored("Food ordering ...",'green'))		
+
+			tmp = json.loads(tmp.decode('utf-8'))
+			food_id = int(tmp["food_id"])
+			order_name = tmp["name"]
+			order_status = "cooking"
+			print(food_id, order_name, order_status)
+			#POST to SQL
+			orderFood(food_id, order_name, order_status)
+
+			print("\n===========================================================")
+			
+		except Exception as e:
+			resp.body = json.dumps({
+				'message':'error for '+str(e),
+				'flag':bool(0)
+			})
+			print("Exception = " + str(e))
+			print("===========================================================")
+		else:
+			resp.body = json.dumps({
+				'Person':order_name,
+				'food_id':food_id,
+				'result':'Success!',
+				'flag':bool(1)
+			})
+
+def orderFood(id, name, status):
+	food_id = id
+	order_pname = name #person name
+	order_status = status
+
+	conn = pymysql.connect(host='localhost', user='eric', passwd='phpmyadmin',database='foodNTUST')
+	cursor = conn.cursor()
+
+	sql_search = '''SELECT * FROM food_menu WHERE food_id = %s '''
+	data = (food_id)
+	cursor.execute(sql_search, data)
+	result = cursor.fetchall()
+	order_fname = result[0][1] #food name
+	order_price = result[0][2]
+	order_take = result[0][3]
+
+	sql_search = '''SELECT * FROM member WHERE member_name = %s '''
+	data = (order_pname)
+	cursor.execute(sql_search, data)
+	result = cursor.fetchall()
+	order_deliver = result[0][2]
+	order_phone = result[0][3]
+
+	sql_insert = '''INSERT INTO food_order (order_pname, order_fname, order_take, order_deliver, order_price, order_status) VALUES (%s, %s, %s, %s, %s, %s);'''
+	data = (order_pname, order_fname, order_take, order_deliver, order_price, order_status)
+	cursor.execute(sql_insert, data)
+	conn.commit()
+	
+	cursor.close()
+	conn.close()
+'''
 class CardRecords:
 	"""docstring"""
 	def __init__(self):
@@ -156,3 +223,4 @@ def POST(data, collect):
 					return True
 	except Exception as err_login:
 		print(err_login)
+'''

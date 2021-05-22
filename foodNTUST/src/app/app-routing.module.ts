@@ -24,20 +24,20 @@ const routes: Routes = [
     loadChildren: () => import('./food-menu/food-menu.module').then( m => m.FoodMenuPageModule)
   },
   {
-    path: 'register',
-    loadChildren: () => import('./auth/register/register.module').then( m => m.RegisterPageModule)
-  },
-  {
-    path: 'sign-in',
-    loadChildren: () => import('./auth/sign-in/sign-in.module').then( m => m.SignInPageModule)
-  },
-  {
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
   {
-    path: 'food-detail',
+    path: 'food-detail/:food_ID',
     loadChildren: () => import('./food-detail/food-detail.module').then( m => m.FoodDetailPageModule)
+  },
+  {
+    path: 'login-in',
+    loadChildren: () => import('./login-in/login-in.module').then( m => m.LoginInPageModule)
+  },
+  {
+    path: 'register',
+    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
   },
 ];
 
