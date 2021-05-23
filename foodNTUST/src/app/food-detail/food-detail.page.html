@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-title>Food Information</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/food-menu"></ion-back-button>
+      <ion-back-button defaultHref="/food-menu/{{restaurant_ID}}"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -12,33 +12,27 @@
   <ion-card>
     <ion-list>
       <ion-item class="ion-text-center">
-        <ion-img class="ion-text-center" [src]="data_foodMenu && data_foodMenu[food_ID][5]"></ion-img>
+        <ion-img class="img" [src]="data_foodMenu && data_foodMenu[4]"></ion-img>
       </ion-item>
       Food Name:
       <ion-item color="danger" class="ion-text-center">
-        <ion-label> {{data_foodMenu && data_foodMenu[food_ID][1]}} </ion-label>
+        <ion-label> {{data_foodMenu && data_foodMenu[1]}} </ion-label>
       </ion-item>
       Price
       <ion-item color="light"  >
         <ion-text color="dark" class="ion-text-center">
-          <h3 >  ${{data_foodMenu && data_foodMenu[food_ID][2]}}  NTD</h3>
-        </ion-text>
-      </ion-item>
-      Place
-      <ion-item color="light"  class="ion-text-center">
-        <ion-text color="dark" class="ion-text-center">
-          <h3>  {{data_foodMenu && data_foodMenu[food_ID][3]}} </h3>
+          <h3>  ${{data_foodMenu && data_foodMenu[3]}}  NTD</h3>
         </ion-text>
       </ion-item>
       Description
       <ion-item  color="light">
         <ion-text color="dark" class="ion-text-center">
-          <h3> {{data_foodMenu && data_foodMenu[food_ID][4]}} </h3>
+          <h3> {{data_foodMenu && data_foodMenu[5]}} </h3>
         </ion-text>
       </ion-item>
     </ion-list>
   </ion-card>
-  <ion-button  (click) ="send_order(data_foodMenu[food_ID][0],'Eric Tsai')">
+  <ion-button  (click) ="send_order(data_foodMenu[0],'蔡卓倫')">
     order
   </ion-button>
   </div>

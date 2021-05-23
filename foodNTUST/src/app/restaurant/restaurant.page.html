@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar color='primary'>
+    <ion-title>restaurant</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-list>
+      <ion-item color="light" class="ion-text-center" [routerLink]="['../food-menu/',data_restaurant && data_restaurant[0][1]]">
+        <ion-label> {{data_restaurant && data_restaurant[0][1]}} </ion-label>
+      </ion-item>
+      <ion-item color="light" class="ion-text-center" [routerLink]="['../food-menu/',data_restaurant && data_restaurant[0][1]]">
+        <ion-img class="img" [src]="data_restaurant && data_restaurant[0][4]"></ion-img>
+      </ion-item>
+
+      <ion-item color="light" class="ion-text-center" [routerLink]="['../food-menu/',data_restaurant && data_restaurant[1][1]]">
+        <ion-label> {{data_restaurant && data_restaurant[1][1]}} </ion-label>
+      </ion-item>
+      <ion-item color="light" class="ion-text-center" [routerLink]="['../food-menu/',data_restaurant && data_restaurant[1][1]]">
+        <ion-img class="img" [src]="data_restaurant && data_restaurant[1][4]"></ion-img>
+      </ion-item>
+
+      <ion-item color="light" class="ion-text-center">
+        <ion-label> {{data_restaurant && data_restaurant[1][1]}} </ion-label>
+      </ion-item>
+      <ion-item color="light" class="ion-text-center">
+        <ion-img class="img" [src]="data_restaurant && data_restaurant[1][4]"></ion-img>
+      </ion-item>
+
+    </ion-list>
+  </ion-card>
+</ion-content>

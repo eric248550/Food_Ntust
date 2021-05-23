@@ -1,6 +1,5 @@
 # -*- coding UTF-8 -*-
 
-from pymongo import MongoClient
 import datetime
 import time
 import json
@@ -9,7 +8,7 @@ import pymysql
 #requests
 import requests
 from requests.auth import HTTPBasicAuth
-from bs4 import BeautifulSoup
+#from bs4 import BeautifulSoup
 #color
 from termcolor import colored
 #str -> ObjectID
@@ -36,14 +35,14 @@ class OrderFood:
 			print("\n===========================================================")
 			
 		except Exception as e:
-			resp.body = json.dumps({
+			resp.text = json.dumps({
 				'message':'error for '+str(e),
 				'flag':bool(0)
 			})
 			print("Exception = " + str(e))
 			print("===========================================================")
 		else:
-			resp.body = json.dumps({
+			resp.text = json.dumps({
 				'Person':order_name,
 				'food_id':food_id,
 				'result':'Success!',
@@ -63,18 +62,26 @@ def orderFood(id, name, status):
 	cursor.execute(sql_search, data)
 	result = cursor.fetchall()
 	order_fname = result[0][1] #food name
-	order_price = result[0][2]
-	order_take = result[0][3]
+	food_restaurant = result[0][2]
+	food_price = result[0][3]
 
 	sql_search = '''SELECT * FROM member WHERE member_name = %s '''
 	data = (order_pname)
 	cursor.execute(sql_search, data)
 	result = cursor.fetchall()
-	order_deliver = result[0][2]
-	order_phone = result[0][3]
+	member_location = result[0][2]
+	member_phone = result[0][4]
 
-	sql_insert = '''INSERT INTO food_order (order_pname, order_fname, order_take, order_deliver, order_price, order_status) VALUES (%s, %s, %s, %s, %s, %s);'''
-	data = (order_pname, order_fname, order_take, order_deliver, order_price, order_status)
+	sql_search = '''SELECT * FROM restaurant WHERE restaurant_name = %s '''
+	data = (food_restaurant)
+	cursor.execute(sql_search, data)
+	result = cursor.fetchall()
+	restaurant_location = result[0][2]
+
+	food_location = restaurant_location + ': ' + food_restaurant
+
+	sql_insert = '''INSERT INTO food_order (order_pname, order_fname, food_location, deliver_location, order_phone, order_price, order_status) VALUES (%s, %s, %s, %s, %s, %s, %s);'''
+	data = (order_pname, order_fname, food_location, member_location, member_phone, food_price, order_status)
 	cursor.execute(sql_insert, data)
 	conn.commit()
 	
@@ -130,14 +137,14 @@ class CardRecords:
 			print("\n===========================================================")
 			
 		except Exception as e:
-			resp.body = json.dumps({
+			resp.text = json.dumps({
 				'message':'error for'+str(e),
 				'flag':bool(0)
 			})
 			print("Exception = " + str(e))
 			print("===========================================================")
 		else:
-			resp.body = json.dumps({
+			resp.text = json.dumps({
 				'Person':cm_id,
 				'Room':cr,
 				'result':'Success!',

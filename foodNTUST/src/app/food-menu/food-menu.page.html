@@ -1,8 +1,8 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color='primary'>
     <ion-title>food-menu</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
+      <ion-back-button defaultHref="/restaurant"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -10,24 +10,20 @@
 <ion-content>
   <ion-card>
     <ion-list>
-      <ion-item color="light" class="ion-text-center" [routerLink]="['../food-detail/',data_foodMenu && data_foodMenu[0][0]]">
+      <ion-item color="light" class="ion-text-center" [routerLink]="['../../food-detail/',restaurant_ID ,data_foodMenu && data_foodMenu[0][0]]">
         <ion-avatar slot="start">
-          <img [src]= "data_foodMenu && data_foodMenu[0][5]">
+          <img [src]= "data_foodMenu && data_foodMenu[0][4]">
         </ion-avatar>
         <ion-label> {{data_foodMenu && data_foodMenu[0][1]}} </ion-label>
       </ion-item>
-      <ion-item color="light" class="ion-text-center" [routerLink]="['../food-detail/',data_foodMenu && data_foodMenu[1][0]]">
+
+      <ion-item color="light" class="ion-text-center" [routerLink]="['../../food-detail/',restaurant_ID ,data_foodMenu && data_foodMenu[1][0]]">
         <ion-avatar slot="start">
-          <img [src]= "data_foodMenu && data_foodMenu[1][5]">
+          <img [src]= "data_foodMenu && data_foodMenu[1][4]">
         </ion-avatar>
         <ion-label> {{data_foodMenu && data_foodMenu[1][1]}} </ion-label>
       </ion-item>
-      <ion-item color="light" class="ion-text-center" [routerLink]="['../food-detail/',data_foodMenu && data_foodMenu[2][0]]">
-        <ion-avatar slot="start">
-          <img [src]= "data_foodMenu && data_foodMenu[2][5]">
-        </ion-avatar>
-        <ion-label> {{data_foodMenu && data_foodMenu[2][1]}} </ion-label>
-      </ion-item>
+      
     </ion-list>
   </ion-card>
 </ion-content>
