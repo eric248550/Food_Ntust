@@ -1,23 +1,23 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>deliver</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">deliver</ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
+    <ion-button class="hypertext" size="large" color="success" fill="clear" slot="end" >Hi, {{name}}</ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-card>
     <ion-list>
-      <ion-item color="light" class="ion-text-center">
+      <ion-item color="light" class="ion-text-center" *ngFor="let location of data_cookingFood">
         <ion-avatar slot="start">
           <img [src]= '"https://i.imgur.com/CsxSHEa.png"'>
         </ion-avatar>
-        <ion-label> {{data_cookingFood && data_cookingFood[0][3]}} </ion-label>
-        <ion-button color="danger">接單</ion-button>
+        <ion-label> {{location.location}} </ion-label>
+        <ion-button size="large" color="danger">接單</ion-button>
       </ion-item>
-
     </ion-list>
   </ion-card>
 </ion-content>

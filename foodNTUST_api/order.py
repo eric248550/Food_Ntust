@@ -26,11 +26,11 @@ class OrderFood:
 
 			tmp = json.loads(tmp.decode('utf-8'))
 			food_id = int(tmp["food_id"])
-			order_name = tmp["name"]
+			order_email = tmp["email"]
 			order_status = "cooking"
-			print(food_id, order_name, order_status)
+			print(food_id, order_email, order_status)
 			#POST to SQL
-			orderFood(food_id, order_name, order_status)
+			orderFood(food_id, order_email, order_status)
 
 			print("\n===========================================================")
 			
@@ -43,15 +43,15 @@ class OrderFood:
 			print("===========================================================")
 		else:
 			resp.text = json.dumps({
-				'Person':order_name,
+				'Person':order_email,
 				'food_id':food_id,
 				'result':'Success!',
 				'flag':bool(1)
 			})
 
-def orderFood(id, name, status):
+def orderFood(id, email, status):
 	food_id = id
-	order_pname = name #person name
+	order_email = email #person name
 	order_status = status
 
 	conn = pymysql.connect(host='localhost', user='eric', passwd='phpmyadmin',database='foodNTUST')
@@ -65,10 +65,11 @@ def orderFood(id, name, status):
 	food_restaurant = result[0][2]
 	food_price = result[0][3]
 
-	sql_search = '''SELECT * FROM member WHERE member_name = %s '''
-	data = (order_pname)
+	sql_search = '''SELECT * FROM member WHERE member_email = %s '''
+	data = (order_email)
 	cursor.execute(sql_search, data)
 	result = cursor.fetchall()
+	member_name = result[0][1]
 	member_location = result[0][2]
 	member_phone = result[0][4]
 
@@ -80,8 +81,8 @@ def orderFood(id, name, status):
 
 	food_location = restaurant_location + ': ' + food_restaurant
 
-	sql_insert = '''INSERT INTO food_order (order_pname, order_fname, food_location, deliver_location, order_phone, order_price, order_status) VALUES (%s, %s, %s, %s, %s, %s, %s);'''
-	data = (order_pname, order_fname, food_location, member_location, member_phone, food_price, order_status)
+	sql_insert = '''INSERT INTO food_order (order_pname, order_fname, food_location, food_destination, order_phone, order_price, order_status,food_deliver) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);'''
+	data = (member_name, order_fname, food_location, member_location, member_phone, food_price, order_status, pymysql.NULL)
 	cursor.execute(sql_insert, data)
 	conn.commit()
 	

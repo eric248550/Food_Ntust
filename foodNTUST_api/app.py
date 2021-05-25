@@ -7,7 +7,7 @@ from falcon_auth import FalconAuthMiddleware, BasicAuthBackend
 from query import Get_Food_Menu
 from order import OrderFood
 from member import Register
-from member import Test
+from member import Login
 
 #
 #       GET
@@ -24,7 +24,7 @@ api = falcon.App(cors_enable=True)
 api.add_route('/orderFood', OrderFood() )
 api.add_route('/getFoodMenu', Get_Food_Menu() )  ##
 api.add_route('/register', Register() )  ##
-api.add_route('/test', Test() )  ##
+api.add_route('/login', Login() )  ##
 
 # api.add_route('/muti',listen())
 

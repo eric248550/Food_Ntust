@@ -14,26 +14,23 @@ from termcolor import colored
 #str -> ObjectID
 from bson import ObjectId
 # jwt token
-import pyjwt
+import jwt
 
-class jwtTest:
+class Login:
 	def __init__(self):
-		self.fun_Name = "jwtTest"
+		self.fun_Name = "Login"
 
 	def on_post(self,req,resp):
 		try:
 			tmp = req.stream.read()
-			print(colored("jwtTest ...",'green'))
+			print(colored("Login ...",'green'))
 
 			tmp = json.loads(tmp.decode('utf-8'))
-
-			token = tmp["token"]
-			if token:
-				decode = jwt.decode(encoded_jwt, "secret", algorithms=["HS256"])
-				print(decode)
+			email = tmp["email"]
+			password = tmp["password"]
 
 			#POST to SQL
-
+			result = login(email, password)
 
 			print("\n===========================================================")
 			
@@ -45,12 +42,41 @@ class jwtTest:
 			print("Exception = " + str(e))
 			print("===========================================================")
 		else:
-			resp.text = json.dumps({
-				'result':'Success!',
-				'flag':bool(1)
-			})
+			if result == bool(0):
+				resp.text = json.dumps({
+				'message':'Password Incorrect',
+				'flag':bool(0)
+				})
+				print("Password Incorrect: " + email)
+				print("===========================================================")
+			else:
+				token = jwt.encode({"name":result[0][1],"email": result[0][3]}, "DatabaseDesign-secret-key", algorithm="HS256")
+				resp.text = json.dumps({
 
-# decode jwt
+					'token':token,
+					'result':'Login Success!',
+					'flag':bool(1)
+				})
+				print("Login Success: " + email)
+				print("===========================================================")
+
+def login(email, password):
+	conn = pymysql.connect(host='localhost', user='eric', passwd='phpmyadmin',database='foodNTUST')
+	cursor = conn.cursor()
+
+	sql_search = '''SELECT * FROM member WHERE member_email = %s'''
+	data = (email)
+	cursor.execute(sql_search, data)
+	result = cursor.fetchall()
+	conn.commit()
+	print(result[0][5])
+
+	cursor.close()
+	conn.close()
+	if password == result[0][5]:
+		return result
+	else:
+		return bool(0)
 
 
 class Register:

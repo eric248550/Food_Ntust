@@ -43,6 +43,10 @@ const routes: Routes = [
     path: 'restaurant',
     loadChildren: () => import('./restaurant/restaurant.module').then( m => m.RestaurantPageModule)
   },
+  {
+    path: 'deliver-detail',
+    loadChildren: () => import('./deliver-detail/deliver-detail.module').then( m => m.DeliverDetailPageModule)
+  },
 ];
 
 @NgModule({
