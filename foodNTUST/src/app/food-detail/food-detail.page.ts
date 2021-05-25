@@ -79,17 +79,13 @@ export class FoodDetailPage implements OnInit {
       buttons: ['Cancel',{
         text: 'OK',
         handler: () => {
-          /*
           this.http.post<any>(this.url_orderFood, body, requestOptions).subscribe(data => {
             console.log(data);
           });
-          */
           Successful.present();
         }
       }]
     });
-
-    
 
     await confirmation.present();
   }
