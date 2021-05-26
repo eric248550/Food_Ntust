@@ -1,12 +1,66 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>costomer</ion-title>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
-    </ion-buttons>
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">Food Status</ion-title>
+    <ion-button size="large" slot="start" fill="icon-only" href="/home">
+      <ion-icon name="home-outline"></ion-icon>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <!--delivering-->
+  <ion-card *ngFor="let id of deliver_id">
+    <ion-card-header color="dark">
+      <ion-card-title class="ion-text-center">Delivering</ion-card-title>
+    </ion-card-header>
 
+    <ion-list>
+      <ion-item>
+        <ion-icon name="newspaper-outline"></ion-icon>
+        <ion-label>訂單編號: {{id.id}} </ion-label>
+      </ion-item>
+
+      <ion-item color="light" class="ion-text-center" *ngFor="let food of data_diliverFood_1">
+        <ion-label> {{food.name}} </ion-label>
+        <ion-label> ${{food.price}} </ion-label>
+      </ion-item>
+      <ion-item color="danger" class="ion-float-right">
+        <ion-label class="ion-float-right">Total: ${{total_price}} </ion-label>
+      </ion-item>
+      
+    </ion-list>
+    <ion-label>Press below button if you receive food</ion-label>
+    <ion-button color="secondary" size="large" expand="block">Confirm Order</ion-button>
+  </ion-card>
+  <!--cooking-->
+  <ion-card *ngFor="let id of cooking_id">
+    <ion-card-header color="medium">
+      <ion-card-title class="ion-text-center">Cooking</ion-card-title>
+    </ion-card-header>
+
+    <ion-list>
+      <ion-item>
+        <ion-icon name="newspaper-outline"></ion-icon>
+        <ion-label>訂單編號: {{id.id}} </ion-label>
+      </ion-item>
+
+      <ion-item color="light" class="ion-text-center" *ngFor="let food of data_cookingFood">
+        <ion-label> {{food.name}} </ion-label>
+        <ion-label> ${{food.price}} </ion-label>
+      </ion-item>
+      <ion-item color="danger" class="ion-float-right">
+        <ion-label class="ion-float-right">Total: ${{total_price}} </ion-label>
+      </ion-item>
+
+      <ion-item color="light" class="ion-text-center">
+        <ion-label> 141 </ion-label>
+        <ion-label>141 </ion-label>
+      </ion-item>
+      <ion-item color="danger" class="ion-float-right">
+        <ion-label class="ion-float-right">Total: ${{total_price}} </ion-label>
+      </ion-item>
+      
+    </ion-list>
+  </ion-card>
+  
 </ion-content>

@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class FoodMenuPage implements OnInit {
   url_foodMenu: string='http://localhost:5000/getFoodMenu';
-  data_foodMenu: any[];
+  data_foodMenu: any[]=[];
   restaurant_ID: string;
 
   constructor(
@@ -35,7 +35,11 @@ export class FoodMenuPage implements OnInit {
     };
     let body = {"restaurant": restaurant}
     this.http.post<any>(this.url_foodMenu, body, requestOptions).subscribe(data => {
-      this.data_foodMenu = data.Data;
+      for(let i=0; i<data.Data.length;i++){
+        this.data_foodMenu.push({id: data.Data[i][0], name: data.Data[i][1], img: data.Data[i][4]});
+      }
+
+      //this.data_foodMenu = data.Data;
       console.log(this.data_foodMenu);
     });
   }

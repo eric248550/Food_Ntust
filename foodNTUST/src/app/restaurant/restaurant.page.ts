@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-restaurant',
@@ -9,13 +10,19 @@ import { HttpClient, HttpHeaders} from '@angular/common/http';
 export class RestaurantPage implements OnInit {
   url_restaurant: string='http://localhost:5000/getRestaurant';
   data_restaurant: any[];
+  name:string;
 
   constructor(
     private http: HttpClient,
+    private storage: Storage,
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.storage.create();
+    this.name = await this.storage.get('name');
+
     this.getRestaurant();
+
   }
 
   getRestaurant(){

@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="ion-text-center">cart</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/restaurant"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item color="medium" class="ion-text-center" *ngFor="let cart of cart.slice(0,1);">
+    <ion-label class="ion-text-center">{{cart.restaurant}}</ion-label>
+  </ion-item>
+  <ion-card>
+    <ion-list>
+      <ion-item color="light" class="ion-text-center" *ngFor="let cart of cart; let l=count">
+        <ion-label> {{cart.name}} </ion-label>
+        <ion-label> ${{cart.price}} </ion-label>
+        <ion-button color="dark" fill="outline">
+          <ion-icon name="add-outline"></ion-icon>
+        </ion-button>
+        <ion-button color="dark" fill="outline">
+          <ion-icon name="remove-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+
+    <ion-button class="text-align: left" color="danger" (click)="cleanCart()">claer cart</ion-button>
+    <ion-button class="text-right" (click)="sendOrder()">Send Order</ion-button>
+  </ion-card>
+</ion-content>

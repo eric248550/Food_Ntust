@@ -23,7 +23,6 @@ export class RegisterPage implements OnInit {
 
   async register(form) {
     console.log(form.value);
-
     const headerDict = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -44,11 +43,27 @@ export class RegisterPage implements OnInit {
         }
       }]
     });
-
-    this.http.post<any>(this.url_register, body, requestOptions).subscribe(data => {
-      console.log(data);
-      Successful.present();
+    const Fail = await this.alertController.create({
+      header: 'Fail!',
+      message: 'Check your information',
+      buttons: [{
+        text: 'OK',
+      }]
     });
+    if(form.value.password != form.value.confirm){
+      Fail.present();
+    }
+    else{
+      this.http.post<any>(this.url_register, body, requestOptions).subscribe(data => {
+        if(data.flag == false){
+          Fail.present();
+        }
+        else{
+          Successful.present();
+        }
+      });
+    }
+    
 
   }
 

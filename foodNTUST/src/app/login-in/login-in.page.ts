@@ -57,6 +57,7 @@ export class LoginInPage implements OnInit {
         console.log(name,email);
         await this.storage.set('name', name);
         await this.storage.set('email', email);
+        await this.storage.set('cart', []);
         this.Router.navigate(['/home']);
       }
     });

@@ -17,6 +17,8 @@ export class FoodDetailPage implements OnInit {
   restaurant_ID: string;
   name: string;
   email: string;
+  cart: any[]=[];
+  cart_length:number;
 
   constructor(
     private http: HttpClient,
@@ -29,6 +31,9 @@ export class FoodDetailPage implements OnInit {
   async ngOnInit() {
     await this.storage.create();
     this.email = await this.storage.get('email');
+    this.cart = await this.storage.get('cart');
+    this.cart_length = this.cart.length
+
     this.food_ID = this.activatedRoute.snapshot.paramMap.get('food_ID');
     this.restaurant_ID = this.activatedRoute.snapshot.paramMap.get('restaurant_ID');
     // const dispenserID = paramMap.get('food_ID');
@@ -53,6 +58,31 @@ export class FoodDetailPage implements OnInit {
       }
       
     });
+  }
+
+  async addCart(food_id, food_name, food_restaurant, food_price){
+    this.cart = await this.storage.get('cart');
+    if(this.cart.length == 0){
+      this.cart.push({id: food_id, name: food_name, restaurant:food_restaurant, price:food_price, email:this.email});
+    }
+    else if(this.cart[0].restaurant == food_restaurant){
+      this.cart.push({id: food_id, name: food_name, restaurant:food_restaurant, price:food_price, email:this.email});
+    }
+    else{
+      const fail = await this.alertController.create({
+        header: 'Fail!',
+        message: 'Your Select different restaurant, please check cart',
+        buttons: [{
+          text: 'OK',
+        }]
+      });
+      fail.present();
+    }
+    await this.storage.set('cart', this.cart);
+
+    this.cart = await this.storage.get('cart');
+    this.cart_length = this.cart.length
+    console.log(this.cart)
   }
 
   async send_order(order_ID,email){
