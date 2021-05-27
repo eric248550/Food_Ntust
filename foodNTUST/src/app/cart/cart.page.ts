@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-cart',
@@ -21,6 +22,7 @@ export class CartPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private Router : Router,
     private http: HttpClient,
+    public alertController: AlertController,
   ) { }
 
   async ngOnInit() {
@@ -52,12 +54,43 @@ export class CartPage implements OnInit {
       headers: new HttpHeaders(headerDict), 
     };
     let body = this.cart;
+
+    const Successful = await this.alertController.create({
+      header: 'Successful!',
+      message: 'Your food order is successful, press OK back to menu',
+      buttons: [{
+        text: 'OK',
+        handler: () => {
+          this.storage.remove('cart');
+          this.storage.set('cart', []);
+          this.Router.navigate(['/home']);
+        }
+      }]
+    });
+
+    const confirmation = await this.alertController.create({
+      header: 'Warning!',
+      message: 'Are you sure to order These food?',
+      buttons: ['Cancel',{
+        text: 'OK',
+        handler: () => {
+          this.http.post<any>(this.url_orderFood, body, requestOptions).subscribe(data => {
+            console.log(data);
+          });
+          Successful.present();
+        }
+      }]
+    });
+    confirmation.present();
+    /*
     this.http.post<any>(this.url_orderFood, body, requestOptions).subscribe(data => {
       console.log(data);
     });
+    
     //clean cart
     await this.storage.remove('cart');
     await this.storage.set('cart', []);
     this.Router.navigate(['/restaurant']);
+    */
   }
 }

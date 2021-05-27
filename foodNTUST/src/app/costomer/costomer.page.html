@@ -9,58 +9,50 @@
 
 <ion-content>
   <!--delivering-->
-  <ion-card *ngFor="let id of deliver_id">
+  <ion-card *ngFor="let num of deliver_data; let i=index">
     <ion-card-header color="dark">
       <ion-card-title class="ion-text-center">Delivering</ion-card-title>
     </ion-card-header>
 
     <ion-list>
-      <ion-item>
+      <ion-item *ngFor="let id of deliver_data[i] | slice:0:1">
         <ion-icon name="newspaper-outline"></ion-icon>
         <ion-label>訂單編號: {{id.id}} </ion-label>
       </ion-item>
 
-      <ion-item color="light" class="ion-text-center" *ngFor="let food of data_diliverFood_1">
+      <ion-item color="light" class="ion-text-center" *ngFor="let food of deliver_data[i]">
         <ion-label> {{food.name}} </ion-label>
         <ion-label> ${{food.price}} </ion-label>
       </ion-item>
       <ion-item color="danger" class="ion-float-right">
-        <ion-label class="ion-float-right">Total: ${{total_price}} </ion-label>
+        <ion-label class="ion-float-right">Total: ${{deliver_price[i]}} </ion-label>
       </ion-item>
       
     </ion-list>
-    <ion-label>Press below button if you receive food</ion-label>
-    <ion-button color="secondary" size="large" expand="block">Confirm Order</ion-button>
+    <ion-label> Press below button if you receive food</ion-label>
+    <ion-button (click)="orderFinish(num[i].id)" color="secondary" size="large" expand="block">Confirm Order</ion-button>
   </ion-card>
-  <!--cooking-->
-  <ion-card *ngFor="let id of cooking_id">
+
+  <ion-card *ngFor="let num of cooking_data; let i=index">
     <ion-card-header color="medium">
       <ion-card-title class="ion-text-center">Cooking</ion-card-title>
     </ion-card-header>
 
     <ion-list>
-      <ion-item>
+      <ion-item *ngFor="let id of cooking_data[i] | slice:0:1">
         <ion-icon name="newspaper-outline"></ion-icon>
-        <ion-label>訂單編號: {{id.id}} </ion-label>
+        <ion-label> 訂單編號: {{id.id}} </ion-label>
       </ion-item>
 
-      <ion-item color="light" class="ion-text-center" *ngFor="let food of data_cookingFood">
+      <ion-item color="light" class="ion-text-center" *ngFor="let food of cooking_data[i]">
         <ion-label> {{food.name}} </ion-label>
         <ion-label> ${{food.price}} </ion-label>
       </ion-item>
       <ion-item color="danger" class="ion-float-right">
-        <ion-label class="ion-float-right">Total: ${{total_price}} </ion-label>
+        <ion-label class="ion-float-right">Total: ${{cooking_price[i]}} </ion-label>
       </ion-item>
 
-      <ion-item color="light" class="ion-text-center">
-        <ion-label> 141 </ion-label>
-        <ion-label>141 </ion-label>
-      </ion-item>
-      <ion-item color="danger" class="ion-float-right">
-        <ion-label class="ion-float-right">Total: ${{total_price}} </ion-label>
-      </ion-item>
-      
     </ion-list>
   </ion-card>
-  
+
 </ion-content>

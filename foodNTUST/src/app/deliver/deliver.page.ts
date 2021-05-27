@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class DeliverPage implements OnInit {
   url_cookingFood: string='http://localhost:5000/getCookingFood';
+  url_DeliveringFood: string='http://localhost:5000/getDeliveringFood';
   url_toDeliver: string='http://localhost:5000/toDeliver';
   data_cookingFood: any[]=[];
   email: string;
@@ -26,11 +27,34 @@ export class DeliverPage implements OnInit {
     await this.storage.create();
     this.name = await this.storage.get('name');
     this.email = await this.storage.get('email');
-    this.deliver_object = await this.storage.get('deliver_object'); 
-    if(this.deliver_object){
-      this.Router.navigate(['/deliver-detail']);
-    }
+
+    this.getDeliveringFood();
     this.getCookingFood();
+    
+  }
+
+  getDeliveringFood(){
+    const headerDict = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Access-Control-Allow-Headers': "content-type",
+    }
+    const requestOptions = {                                                                                                                                                                                 
+      headers: new HttpHeaders(headerDict), 
+    };
+    this.http.get<any>(this.url_DeliveringFood, requestOptions).subscribe(data => {
+      console.log(data.Data);
+      // check if have order
+      for(let i=0; i<data.Data.length;i++){
+        console.log(data.Data[i][10]);
+        console.log(this.email);
+        if(data.Data[i][10] == this.email){
+          this.Router.navigate(['/deliver-detail']);
+        }else{
+          this.storage.remove("deliver_object");
+        }
+      }
+    });
   }
 
   getCookingFood(){
