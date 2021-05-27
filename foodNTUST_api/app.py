@@ -8,12 +8,16 @@ from query import Get_Food_Menu
 from order import OrderFood
 from member import Register
 from member import Login
-
+from order import ToDeliver
+from order import Get_Deliver_Food
+from order import Get_Customer_Food
+from order import OrderFinish
 #
 #       GET
 #
 from query import Get_Cooking_Food
 from query import Get_Restaurant
+from query import Get_Delivering_Food
 
 
 api = falcon.App(cors_enable=True)
@@ -25,9 +29,14 @@ api.add_route('/orderFood', OrderFood() )
 api.add_route('/getFoodMenu', Get_Food_Menu() )  ##
 api.add_route('/register', Register() )  ##
 api.add_route('/login', Login() )  ##
+api.add_route('/toDeliver', ToDeliver() )  ##
+api.add_route('/getDeliverFood', Get_Deliver_Food() )  ##
+api.add_route('/getCustomerFood', Get_Customer_Food() )  ##
+api.add_route('/orderFinish', OrderFinish() )  ##
 
 # api.add_route('/muti',listen())
 
 ### Get
 api.add_route('/getCookingFood', Get_Cooking_Food() )  ##
+api.add_route('/getDeliveringFood', Get_Delivering_Food() )  ##
 api.add_route('/getRestaurant', Get_Restaurant() )  ##

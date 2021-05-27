@@ -88,7 +88,7 @@ class Register:
 		try:
 			tmp = req.stream.read()
 			print(colored("Register ...",'green'))
-			print(email)
+
 			tmp = json.loads(tmp.decode('utf-8'))
 
 			name = tmp["name"]

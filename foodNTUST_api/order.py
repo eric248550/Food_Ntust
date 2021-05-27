@@ -14,23 +14,22 @@ from termcolor import colored
 #str -> ObjectID
 from bson import ObjectId
 
-class OrderFood:
+class OrderFinish:
 	"""docstring"""
 	def __init__(self):
-		self.fun_Name = "Order_Food"
+		self.fun_Name = "OrderFinish"
 
 	def on_post(self,req,resp):
 		try:
 			tmp = req.stream.read()
-			print(colored("Food ordering ...",'green'))		
+			print(colored("Finish order ...",'green'))		
 
 			tmp = json.loads(tmp.decode('utf-8'))
-			food_id = int(tmp["food_id"])
-			order_email = tmp["email"]
-			order_status = "cooking"
-			print(food_id, order_email, order_status)
+
+			order_id = tmp["order_id"]
+			print(order_id)
 			#POST to SQL
-			orderFood(food_id, order_email, order_status)
+			orderFinish(order_id)
 
 			print("\n===========================================================")
 			
@@ -43,27 +42,114 @@ class OrderFood:
 			print("===========================================================")
 		else:
 			resp.text = json.dumps({
-				'Person':order_email,
-				'food_id':food_id,
 				'result':'Success!',
 				'flag':bool(1)
 			})
 
-def orderFood(id, email, status):
-	food_id = id
-	order_email = email #person name
-	order_status = status
+def orderFinish(order_id):
+	order_status = 'Finish'
+
+	conn = pymysql.connect(host='localhost', user='eric', passwd='phpmyadmin',database='foodNTUST')
+	cursor = conn.cursor()
+	# change status
+	sql_search = '''UPDATE food_order SET order_status = %s WHERE order_id = %s '''
+	data = (order_status, order_id)
+	cursor.execute(sql_search, data)
+	conn.commit()
+	
+	cursor.close()
+	conn.close()
+
+class ToDeliver:
+	"""docstring"""
+	def __init__(self):
+		self.fun_Name = "ToDeliver"
+
+	def on_post(self,req,resp):
+		try:
+			tmp = req.stream.read()
+			print(colored("Deliver taking ...",'green'))		
+
+			tmp = json.loads(tmp.decode('utf-8'))
+
+			order_id = tmp["order_id"]
+			deliver_email = tmp["deliver_email"]
+			print(order_id, deliver_email)
+			#POST to SQL
+			toDeliver(order_id, deliver_email)
+
+			print("\n===========================================================")
+			
+		except Exception as e:
+			resp.text = json.dumps({
+				'message':'error for '+str(e),
+				'flag':bool(0)
+			})
+			print("Exception = " + str(e))
+			print("===========================================================")
+		else:
+			resp.text = json.dumps({
+				'result':'Success!',
+				'flag':bool(1)
+			})
+
+def toDeliver(order_id, deliver_email):
+	order_status = 'delivering'
 
 	conn = pymysql.connect(host='localhost', user='eric', passwd='phpmyadmin',database='foodNTUST')
 	cursor = conn.cursor()
 
-	sql_search = '''SELECT * FROM food_menu WHERE food_id = %s '''
-	data = (food_id)
+	sql_search = '''UPDATE food_order SET food_deliver = %s, order_status = %s WHERE order_id = %s '''
+	data = (deliver_email, order_status, order_id)
 	cursor.execute(sql_search, data)
-	result = cursor.fetchall()
-	order_fname = result[0][1] #food name
-	food_restaurant = result[0][2]
-	food_price = result[0][3]
+	conn.commit()
+	
+	cursor.close()
+	conn.close()
+
+
+class OrderFood:
+	"""docstring"""
+	def __init__(self):
+		self.fun_Name = "Order_Food"
+
+	def on_post(self,req,resp):
+		try:
+			tmp = req.stream.read()
+			print(colored("Food ordering ...",'green'))		
+
+			tmp = json.loads(tmp.decode('utf-8'))
+
+			order_id = str(int(time.time()))
+			for i in range(len(tmp)):
+				food_name = tmp[i]["name"]
+				food_restaurant = tmp[i]["restaurant"]
+				order_email = tmp[i]["email"]
+				food_price = int(tmp[i]["price"])
+				
+				#POST to SQL
+				orderFood(order_id, food_name, food_restaurant, order_email, food_price)
+
+			print("\n===========================================================")
+			
+		except Exception as e:
+			resp.text = json.dumps({
+				'message':'error for '+str(e),
+				'flag':bool(0)
+			})
+			print("Exception = " + str(e))
+			print("===========================================================")
+		else:
+			resp.text = json.dumps({
+				'result':'Success!',
+				'flag':bool(1)
+			})
+
+def orderFood(order_id, food_name, food_restaurant, order_email, food_price):
+	order_status = 'cooking'
+
+	conn = pymysql.connect(host='localhost', user='eric', passwd='phpmyadmin',database='foodNTUST')
+	cursor = conn.cursor()
 
 	sql_search = '''SELECT * FROM member WHERE member_email = %s '''
 	data = (order_email)
@@ -81,154 +167,112 @@ def orderFood(id, email, status):
 
 	food_location = restaurant_location + ': ' + food_restaurant
 
-	sql_insert = '''INSERT INTO food_order (order_pname, order_fname, food_location, food_destination, order_phone, order_price, order_status,food_deliver) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);'''
-	data = (member_name, order_fname, food_location, member_location, member_phone, food_price, order_status, pymysql.NULL)
+	sql_insert = '''INSERT INTO food_order (order_id, order_pname, order_email, order_fname, food_location, food_destination, order_phone, order_price, order_status,food_deliver) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);'''
+	data = (order_id, member_name, order_email, food_name, food_location, member_location, member_phone, food_price, order_status, pymysql.NULL)
 	cursor.execute(sql_insert, data)
 	conn.commit()
 	
 	cursor.close()
 	conn.close()
-'''
-class CardRecords:
+
+class Get_Deliver_Food:
 	"""docstring"""
 	def __init__(self):
-		self.fun_Name = "post"
+		self.fun_Name = "Get_Deliver_Food"
 
 	def on_post(self,req,resp):
 		try:
 			tmp = req.stream.read()
-			print(colored("Card recording ...",'green'))			
-			# print("data = \n")
+			print(colored("Get delivering food ...",'green'))		
+
 			tmp = json.loads(tmp.decode('utf-8'))
-			
-			# print(tmp['StartTime'],tmp['EndTime'])
-			starttime = int(tmp['StartTime'])
-			endtime = int(tmp['EndTime'])
-            #timezone = int(tmp['TimeZone'])
-            #acsgroup = int(tmp['AcsGroup'])
-			# print(starttime,endtime)
 
-			StartTime_string = datetime.datetime.fromtimestamp(tmp['StartTime'])
-			EndTime_string = datetime.datetime.fromtimestamp(tmp['EndTime'])
-
-			cr = tmp['CardReader']
-			cm_id = tmp['Campus_ID']
-			
-			dict_cr = Query_CardReader(cr)
-			dict_cm_id = Query_User(cm_id)
-
-            
-			data = {
-				'CardReader':dict_cr,
-				'Person':dict_cm_id,
-				'StartTime':starttime,
-				'EndTime':endtime,
-				'StartTime_string':StartTime_string.strftime("%Y-%m-%d %H:%M:%S"),
-				'EndTime_string':EndTime_string.strftime("%Y-%m-%d %H:%M:%S"),
-                'Status':tmp['Status'],
-                'TimeZone':tmp['TimeZone'],
-                'AcsGroup':tmp['AcsGroup'],
-                'GroupNum':tmp['GroupNum'],
-                'TimeZonestr':tmp['TimeZonestr']
-			}
-
-			#POST to DB
-			POST(data,0)
+			order_id = tmp["order_id"]
+			print(order_id)
+			#POST to SQL
+			data = getDeliverFood(order_id)
 
 			print("\n===========================================================")
 			
 		except Exception as e:
 			resp.text = json.dumps({
-				'message':'error for'+str(e),
+				'message':'error for '+str(e),
 				'flag':bool(0)
 			})
 			print("Exception = " + str(e))
 			print("===========================================================")
 		else:
 			resp.text = json.dumps({
-				'Person':cm_id,
-				'Room':cr,
+				'code':200,
 				'result':'Success!',
-				'flag':bool(1)
+				'flag':bool(1),
+				'Data':data
 			})
 
-def Query_CardReader(Name):
-    mongo_url = "mongodb://140.118.123.95:10003"
-    conn = MongoClient(mongo_url)
-    db = conn['SMR']
-    coll = db['CardReader']
-    _find = {"Name":Name}
-    doc = coll.find_one(_find,{'_id':False})
+def getDeliverFood(order_id):
+	conn = pymysql.connect(host='localhost', user='eric', passwd='phpmyadmin',database='foodNTUST')
+	cursor = conn.cursor()
+	result = []
+
+	sql_search = '''SELECT * FROM food_order WHERE order_id = %s AND order_status =%s '''
+	data = (order_id, 'delivering')
+	cursor.execute(sql_search, data)
+	result = cursor.fetchall()
+	conn.commit()
+	for document in cursor:
+		result.append(document)
 	
-    result = {
-        'Name':doc['Name'],
-        'CrAddress':doc['CrAddress'],
-        'IP':doc['IP'],
-        'Port':doc['Port']
-    }
+	cursor.close()
+	conn.close()
+	return result
 
-    return result
+class Get_Customer_Food:
+	def __init__(self):
+		self.fun_Name = "Get_Customer_Food"
 
-def Query_User(Campus_ID):
-    mongo_url = "mongodb://140.118.123.95:10003"
-    conn = MongoClient(mongo_url)
-    db = conn['SMR']
-    coll = db['User']
-    _find = {"Campus_ID":Campus_ID}
-    doc = coll.find_one(_find,{'_id':False})
-    
-    result = {
-        'UserName':doc['UserName'],
-		'Supervisor':doc['Supervisor'],
-        'Campus_ID':doc['Campus_ID'],
-        'CardNumber':doc['CardNumber']
-    }
+	def on_post(self,req,resp):
+		try:
+			tmp = req.stream.read()
+			print(colored("Get customer food ...",'green'))		
 
-    return result
+			tmp = json.loads(tmp.decode('utf-8'))
 
-def Query_Supervisor(Supervisor):
-	mongo_url = "mongodb://140.118.123.95:10003"
-	conn = MongoClient(mongo_url)
-	db = conn['SMR']
-	coll = db['User']
-	_find = {"Supervisor":Supervisor}
-	doc = coll.find(_find,{'id':False})
+			email = tmp["email"]
+			print(email)
+			#POST to SQL
+			data = getCustomerFood(email)
 
-	print(result)
+			print("\n===========================================================")
+			
+		except Exception as e:
+			resp.text = json.dumps({
+				'message':'error for '+str(e),
+				'flag':bool(0)
+			})
+			print("Exception = " + str(e))
+			print("===========================================================")
+		else:
+			resp.text = json.dumps({
+				'code':200,
+				'result':'Success!',
+				'flag':bool(1),
+				'Data':data
+			})
 
-#POST to mongoDB(smartcampus)
-def POST(data, collect):
-	try:
-		# print(colored("SAVING Commmad to MongoDB ...",'green'))
-		# print("Function Name : ")
-		if collect == 0 :
-			try:
-				mongo_url = "mongodb://140.118.123.95:10003"
-				conn = MongoClient(mongo_url)
-				db = conn['SMR']
+def getCustomerFood(email):
+	conn = pymysql.connect(host='localhost', user='eric', passwd='phpmyadmin',database='foodNTUST')
+	cursor = conn.cursor()
+	result = []
 
-				coll = db['CardRecords']
-			except Exception as err_post:
-				print("Response Code :",colored(err_post.status_code,'red'))
-				print(colored(err_post,'red'))
-			else:
-				coll.insert_one(data)
-				print(colored("Card recording SUCCESS !!",'green'))
-		elif collect == 1:		#remove
-			try:
-				mongo_url = "mongodb://140.118.123.95:10003"
-				conn = MongoClient(mongo_url)
-				db = conn['SMR']
+	sql_search = '''SELECT * FROM food_order WHERE order_email =%s '''
+	data = (email)
+	cursor.execute(sql_search, data)
+	result = cursor.fetchall()
+	conn.commit()
+	for document in cursor:
+		result.append(document)
+	
+	cursor.close()
+	conn.close()
+	return result
 
-				coll = db['CardRecords']
-			except Exception as err_post:
-				print("Response Code :",colored(err_post.status_code,'red'))   ###requests_post.status
-				print(colored(err_post,'red'))
-			else:
-					#str_to_objectid = ObjectId(data['_id'])  # dict to string
-					coll.remove({"_id" :  ObjectId(data['_id'])  })
-					print(colored("Remove SUCCESS !!",'green'))
-					return True
-	except Exception as err_login:
-		print(err_login)
-'''

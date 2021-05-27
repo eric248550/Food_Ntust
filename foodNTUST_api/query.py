@@ -126,6 +126,31 @@ class Get_Cooking_Food:
 				'Data':data
 				}, ensure_ascii=False)
 
+class Get_Delivering_Food:
+	def __init__(self):
+		self.fun_Name = "Get_Delivering_Food"
+
+	def on_get(self,req,resp):
+		try:
+			print(colored("Get delivering food  ...",'blue'))
+
+			data = getOrderFood('delivering')
+			print("===========================================================")
+		except Exception as e:
+			resp.text = json.dumps({
+				'message':'error for'+str(e),
+				'flag':bool(0)
+			})
+			print("Exception = " + str(e))
+			print("===========================================================")
+		else:
+			resp.text = json.dumps({
+				'code':200,
+				'result':'Success!',
+				'flag':bool(1),
+				'Data':data
+				}, ensure_ascii=False)
+
 def getOrderFood(status):
 	conn = pymysql.connect(host='localhost', user='eric', passwd='phpmyadmin',database='foodNTUST')
 	cursor = conn.cursor()
@@ -141,13 +166,3 @@ def getOrderFood(status):
 	cursor.close()
 	conn.close()
 	return result
-
-
-from bson import ObjectId
-import json
-
-class JSONEncoder(json.JSONEncoder):
-    def default(self, o):
-        if isinstance(o, ObjectId):
-            return str(o)
-        return json.JSONEncoder.default(self, o)
