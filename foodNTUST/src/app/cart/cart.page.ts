@@ -82,15 +82,5 @@ export class CartPage implements OnInit {
       }]
     });
     confirmation.present();
-    /*
-    this.http.post<any>(this.url_orderFood, body, requestOptions).subscribe(data => {
-      console.log(data);
-    });
-    
-    //clean cart
-    await this.storage.remove('cart');
-    await this.storage.set('cart', []);
-    this.Router.navigate(['/restaurant']);
-    */
   }
 }

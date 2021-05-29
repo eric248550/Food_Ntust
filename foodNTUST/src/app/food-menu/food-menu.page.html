@@ -1,9 +1,13 @@
 <ion-header>
-  <ion-toolbar color='primary'>
-    <ion-title>food-menu</ion-title>
+  <ion-toolbar color='light'>
+    <ion-title>Menu</ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/restaurant"></ion-back-button>
     </ion-buttons>
+    <ion-button slot="end" href="/cart" fill="outline" size="medium">
+      <ion-icon name="cart-outline"></ion-icon>
+        {{cart_length}}
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 

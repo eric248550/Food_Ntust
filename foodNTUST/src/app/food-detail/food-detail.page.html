@@ -1,9 +1,10 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Food Information</ion-title>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/food-menu/{{restaurant_ID}}"></ion-back-button>
-    </ion-buttons>
+    <ion-button color="primary" slot="start" href="/food-menu/{{restaurant_ID}}" fill="icon-only" size="large">
+      <ion-icon name="chevron-back-outline"></ion-icon>
+      Back
+    </ion-button>
     <ion-button slot="end" href="/cart" fill="outline" size="medium">
       <ion-icon name="cart-outline"></ion-icon>
         {{cart_length}}

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-food-menu',
@@ -11,14 +12,21 @@ export class FoodMenuPage implements OnInit {
   url_foodMenu: string='http://localhost:5000/getFoodMenu';
   data_foodMenu: any[]=[];
   restaurant_ID: string;
+  cart: any[]=[];
+  cart_length:number;
 
   constructor(
     private http: HttpClient,
     private activatedRoute: ActivatedRoute,
     private Router : Router,
+    private storage: Storage,
     ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.storage.create();
+    this.cart = await this.storage.get('cart');
+    this.cart_length = this.cart.length
+    
     this.restaurant_ID = this.activatedRoute.snapshot.paramMap.get('restaurant_ID');
     this.getFoodMenu(this.restaurant_ID);
     console.log(this.restaurant_ID);

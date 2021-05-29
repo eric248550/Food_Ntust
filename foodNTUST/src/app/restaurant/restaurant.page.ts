@@ -11,6 +11,8 @@ export class RestaurantPage implements OnInit {
   url_restaurant: string='http://localhost:5000/getRestaurant';
   data_restaurant: any[];
   name:string;
+  cart: any[]=[];
+  cart_length:number;
 
   constructor(
     private http: HttpClient,
@@ -20,6 +22,8 @@ export class RestaurantPage implements OnInit {
   async ngOnInit() {
     await this.storage.create();
     this.name = await this.storage.get('name');
+    this.cart = await this.storage.get('cart');
+    this.cart_length = this.cart.length
 
     this.getRestaurant();
 
