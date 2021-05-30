@@ -9,7 +9,7 @@ import { Storage } from '@ionic/storage-angular';
   styleUrls: ['./food-menu.page.scss'],
 })
 export class FoodMenuPage implements OnInit {
-  url_foodMenu: string='http://localhost:5000/getFoodMenu';
+  url_foodMenu: string='http://140.118.122.118:5000/getFoodMenu';
   data_foodMenu: any[]=[];
   restaurant_ID: string;
   cart: any[]=[];
@@ -26,7 +26,7 @@ export class FoodMenuPage implements OnInit {
     await this.storage.create();
     this.cart = await this.storage.get('cart');
     this.cart_length = this.cart.length
-    
+
     this.restaurant_ID = this.activatedRoute.snapshot.paramMap.get('restaurant_ID');
     this.getFoodMenu(this.restaurant_ID);
     console.log(this.restaurant_ID);

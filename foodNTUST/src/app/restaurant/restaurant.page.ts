@@ -8,7 +8,7 @@ import { Storage } from '@ionic/storage-angular';
   styleUrls: ['./restaurant.page.scss'],
 })
 export class RestaurantPage implements OnInit {
-  url_restaurant: string='http://localhost:5000/getRestaurant';
+  url_restaurant: string='http://140.118.122.118:5000/getRestaurant';
   data_restaurant: any[];
   name:string;
   cart: any[]=[];

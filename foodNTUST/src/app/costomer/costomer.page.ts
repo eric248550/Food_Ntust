@@ -10,8 +10,8 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./costomer.page.scss'],
 })
 export class CostomerPage implements OnInit {
-  url_getCustomerFood: string='http://localhost:5000/getCustomerFood';
-  url_orderFinish: string = 'http://localhost:5000/orderFinish';
+  url_getCustomerFood: string='http://140.118.122.118:5000/getCustomerFood';
+  url_orderFinish: string = 'http://140.118.122.118:5000/orderFinish';
   email: string;
   name: string;
   //order info
