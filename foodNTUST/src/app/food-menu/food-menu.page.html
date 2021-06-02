@@ -12,9 +12,10 @@
 </ion-header>
 
 <ion-content>
+  <ion-searchbar showCancelButton="focus" (ionChange)="search($event)" clearInput></ion-searchbar>
   <ion-card>
     <ion-list>
-      <ion-item color="light" class="ion-text-center" *ngFor="let foodMenu of data_foodMenu" [routerLink]="['../../food-detail/',restaurant_ID ,foodMenu.id]">
+      <ion-item color="light" class="ion-text-center" *ngFor="let foodMenu of search_foodMenu" [routerLink]="['../../food-detail/',restaurant_ID ,foodMenu.id]">
         <ion-avatar slot="start">
           <img [src]= "foodMenu.img">
         </ion-avatar>
@@ -22,16 +23,4 @@
       </ion-item>
     </ion-list>
   </ion-card>
-  <!--
-  <ion-card>
-    <ion-list>
-      <ion-item color="light" class="ion-text-center" *ngFor="let foodMenu of data_foodMenu" [routerLink]="['../../food-detail/',restaurant_ID ,foodMenu.id">
-        <ion-avatar slot="start">
-          <img [src]= {{foodMenu.img}}>
-        </ion-avatar>
-        <ion-label> {{foodMenu.name}} </ion-label>
-      </ion-item>
-    </ion-list>
-  </ion-card>
-  -->
 </ion-content>

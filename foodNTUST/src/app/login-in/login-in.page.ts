@@ -11,7 +11,7 @@ import jwt_decode from "jwt-decode";
   styleUrls: ['./login-in.page.scss'],
 })
 export class LoginInPage implements OnInit {
-  url_login: string='http://140.118.122.118:5000/login';
+  url_login: string='http://localhost:5000/login';
 
   constructor(
     private http: HttpClient,
@@ -48,6 +48,7 @@ export class LoginInPage implements OnInit {
       let token = data.token;
       let name = jwt_decode(token)["name"];
       let email = jwt_decode(token)["email"];
+      let type = jwt_decode(token)["type"];
 
       if (!data.token){
         console.log("no");
@@ -57,8 +58,11 @@ export class LoginInPage implements OnInit {
         console.log(name,email);
         await this.storage.set('name', name);
         await this.storage.set('email', email);
+        await this.storage.set('type', type);
         await this.storage.set('cart', []);
-        this.Router.navigate(['/home']);
+        let path = '/home-' + type;
+        console.log(path);
+        this.Router.navigate([path]);
       }
     });
   }

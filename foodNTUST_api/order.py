@@ -14,6 +14,52 @@ from termcolor import colored
 #str -> ObjectID
 from bson import ObjectId
 
+class CookFinish:
+	"""docstring"""
+	def __init__(self):
+		self.fun_Name = "CookFinish"
+
+	def on_post(self,req,resp):
+		try:
+			tmp = req.stream.read()
+			print(colored("Cook finish ...",'green'))		
+
+			tmp = json.loads(tmp.decode('utf-8'))
+
+			order_id = tmp["order_id"]
+			print(order_id)
+			#POST to SQL
+			cookFinish(order_id)
+
+			print("\n===========================================================")
+			
+		except Exception as e:
+			resp.text = json.dumps({
+				'message':'error for '+str(e),
+				'flag':bool(0)
+			})
+			print("Exception = " + str(e))
+			print("===========================================================")
+		else:
+			resp.text = json.dumps({
+				'result':'Success!',
+				'flag':bool(1)
+			})
+
+def cookFinish(order_id):
+	order_status = 'waiting for deliver'
+
+	conn = pymysql.connect(host='localhost', user='eric', passwd='phpmyadmin',database='foodNTUST')
+	cursor = conn.cursor()
+	# change status
+	sql_search = '''UPDATE food_order SET order_status = %s WHERE order_id = %s '''
+	data = (order_status, order_id)
+	cursor.execute(sql_search, data)
+	conn.commit()
+	
+	cursor.close()
+	conn.close()
+
 class OrderFinish:
 	"""docstring"""
 	def __init__(self):
@@ -146,7 +192,7 @@ class OrderFood:
 			})
 
 def orderFood(order_id, food_name, food_restaurant, order_email, food_price):
-	order_status = 'cooking'
+	order_status = 'preparing'
 
 	conn = pymysql.connect(host='localhost', user='eric', passwd='phpmyadmin',database='foodNTUST')
 	cursor = conn.cursor()
@@ -167,8 +213,8 @@ def orderFood(order_id, food_name, food_restaurant, order_email, food_price):
 
 	food_location = restaurant_location + ': ' + food_restaurant
 
-	sql_insert = '''INSERT INTO food_order (order_id, order_pname, order_email, order_fname, food_location, food_destination, order_phone, order_price, order_status,food_deliver) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);'''
-	data = (order_id, member_name, order_email, food_name, food_location, member_location, member_phone, food_price, order_status, pymysql.NULL)
+	sql_insert = '''INSERT INTO food_order (order_id, order_pname, order_email, order_fname, food_location, food_destination, order_phone, order_price, order_status,food_deliver, order_restaurant) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);'''
+	data = (order_id, member_name, order_email, food_name, food_location, member_location, member_phone, food_price, order_status, pymysql.NULL, food_restaurant)
 	cursor.execute(sql_insert, data)
 	conn.commit()
 	

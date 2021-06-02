@@ -9,9 +9,9 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./deliver.page.scss'],
 })
 export class DeliverPage implements OnInit {
-  url_cookingFood: string='http://140.118.122.118:5000/getCookingFood';
-  url_DeliveringFood: string='http://140.118.122.118:5000/getDeliveringFood';
-  url_toDeliver: string='http://140.118.122.118:5000/toDeliver';
+  url_cookingFood: string='http://localhost:5000/getCookingFood';
+  url_DeliveringFood: string='http://localhost:5000/getDeliveringFood';
+  url_toDeliver: string='http://localhost:5000/toDeliver';
   data_cookingFood: any[]=[];
   email: string;
   name: string;

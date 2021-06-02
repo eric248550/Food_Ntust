@@ -15,7 +15,7 @@ export class CartPage implements OnInit {
   restaurant_ID: string;
   email:string;
   body: any;
-  url_orderFood: string = 'http://140.118.122.118:5000/orderFood';
+  url_orderFood: string = 'http://localhost:5000/orderFood';
 
   constructor(
     private storage: Storage,
@@ -35,8 +35,15 @@ export class CartPage implements OnInit {
 
     console.log(this.cart);
     console.log(this.email);
+
   }
-  
+  async deleteOrder(index){
+    this.cart = await this.storage.get('cart');
+
+    this.cart.splice(index,1);
+    await this.storage.set('cart', this.cart);
+    
+  }
   async cleanCart(){
     await this.storage.remove('cart');
     await this.storage.set('cart', []);
@@ -63,7 +70,7 @@ export class CartPage implements OnInit {
         handler: () => {
           this.storage.remove('cart');
           this.storage.set('cart', []);
-          this.Router.navigate(['/home']);
+          this.Router.navigate(['/home-customer']);
         }
       }]
     });

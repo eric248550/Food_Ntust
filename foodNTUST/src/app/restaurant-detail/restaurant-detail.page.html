@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">Order detail</ion-title>
+    <ion-button size="large" slot="start" fill="icon-only" href="/home-restaurant">
+      <ion-icon name="home-outline"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngFor="let num of preparing_data; let i=index">
+    <ion-card-header color="medium">
+      <ion-card-title class="ion-text-center">
+        <ion-item color="light" *ngFor="let id of preparing_data[i] | slice:0:1">
+        <ion-icon name="newspaper-outline"></ion-icon>
+        <ion-label> 訂單編號: {{id.id}} </ion-label>
+      </ion-item></ion-card-title>
+    </ion-card-header>
+
+    <ion-list>
+      <ion-item color="light" class="ion-text-center" *ngFor="let food of preparing_data[i]">
+        <ion-label> {{food.name}} </ion-label>
+        <ion-label> ${{food.price}} </ion-label>
+      </ion-item>
+      <ion-item color="danger" class="ion-float-right">
+        <ion-label class="ion-float-right">Total: ${{preparing_price[i]}} </ion-label>
+      </ion-item>
+      <ion-text color="danger"> 
+        <h3>Press below button if finish cooking</h3>
+      </ion-text>
+    </ion-list>
+
+    <ion-list style="text-align:center">
+      <ion-button (click)="cookFinish(num[i].id)" color="secondary" size="large">Finish Order: {{num[i].id}}</ion-button>
+    </ion-list>
+    
+  </ion-card>
+
+</ion-content>

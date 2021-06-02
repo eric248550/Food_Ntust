@@ -9,7 +9,7 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
-  url_register: string='http://140.118.122.118:5000/register';
+  url_register: string='http://localhost:5000/register';
 
   constructor(
     private http: HttpClient,

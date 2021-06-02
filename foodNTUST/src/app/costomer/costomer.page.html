@@ -1,57 +1,87 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title class="ion-text-center">Food Status</ion-title>
-    <ion-button size="large" slot="start" fill="icon-only" href="/home">
+    <ion-button size="large" slot="start" fill="icon-only" href="/home-customer">
       <ion-icon name="home-outline"></ion-icon>
     </ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-item color="danger">
+    <ion-label>Select restaurant type</ion-label>
+    <ion-select placeholder="Select" name="type" (ionChange)="search_type($event)" okText="Okay" cancelText="Cancel" >
+      <ion-select-option value="">All</ion-select-option>
+      <ion-select-option value="Waiting for deliver">Waiting for deliver</ion-select-option>
+      <ion-select-option value="delivering">delivering</ion-select-option>
+      <ion-select-option value="preparing">preparing</ion-select-option>
+    </ion-select>
+  </ion-item>
+
   <!--delivering-->
-  <ion-card *ngFor="let num of deliver_data; let i=index">
+  <ion-card *ngFor="let num of search_deliver_data; let i=index">
     <ion-card-header color="dark">
       <ion-card-title class="ion-text-center">Delivering</ion-card-title>
     </ion-card-header>
-
     <ion-list>
-      <ion-item *ngFor="let id of deliver_data[i] | slice:0:1">
+      <ion-item *ngFor="let id of search_deliver_data[i] | slice:0:1">
         <ion-icon name="newspaper-outline"></ion-icon>
         <ion-label>訂單編號: {{id.id}} </ion-label>
       </ion-item>
-
-      <ion-item color="light" class="ion-text-center" *ngFor="let food of deliver_data[i]">
+      <ion-item color="light" class="ion-text-center" *ngFor="let food of search_deliver_data[i]">
         <ion-label> {{food.name}} </ion-label>
         <ion-label> ${{food.price}} </ion-label>
       </ion-item>
       <ion-item color="danger" class="ion-float-right">
         <ion-label class="ion-float-right">Total: ${{deliver_price[i]}} </ion-label>
       </ion-item>
-      
+      <ion-text color="danger"> 
+        <h3>Press below button if receive food</h3>
+      </ion-text>
     </ion-list>
-    <ion-label> Press below button if you receive food</ion-label>
-    <ion-button (click)="orderFinish(num[i].id)" color="secondary" size="large" expand="block">Confirm Order</ion-button>
+
+    <ion-list style="text-align:center">
+      <ion-button (click)="orderFinish(num[i].id)" color="secondary" size="large">Confirm Order</ion-button>
+    </ion-list>
   </ion-card>
 
-  <ion-card *ngFor="let num of cooking_data; let i=index">
+  <!--Waiting for deliver-->
+  <ion-card *ngFor="let num of search_waiting_data; let i=index">
     <ion-card-header color="medium">
-      <ion-card-title class="ion-text-center">Cooking</ion-card-title>
+      <ion-card-title class="ion-text-center">Waiting for deliver</ion-card-title>
     </ion-card-header>
-
     <ion-list>
-      <ion-item *ngFor="let id of cooking_data[i] | slice:0:1">
+      <ion-item *ngFor="let id of search_waiting_data[i] | slice:0:1">
         <ion-icon name="newspaper-outline"></ion-icon>
         <ion-label> 訂單編號: {{id.id}} </ion-label>
       </ion-item>
-
-      <ion-item color="light" class="ion-text-center" *ngFor="let food of cooking_data[i]">
+      <ion-item color="light" class="ion-text-center" *ngFor="let food of search_waiting_data[i]">
         <ion-label> {{food.name}} </ion-label>
         <ion-label> ${{food.price}} </ion-label>
       </ion-item>
       <ion-item color="danger" class="ion-float-right">
-        <ion-label class="ion-float-right">Total: ${{cooking_price[i]}} </ion-label>
+        <ion-label class="ion-float-right">Total: ${{waiting_price[i]}} </ion-label>
       </ion-item>
+    </ion-list>
+  </ion-card>
 
+  <!--preparing-->
+  <ion-card *ngFor="let num of search_preparing_data; let i=index">
+    <ion-card-header color="success">
+      <ion-card-title class="ion-text-center">preparing</ion-card-title>
+    </ion-card-header>
+    <ion-list>
+      <ion-item *ngFor="let id of search_preparing_data[i] | slice:0:1">
+        <ion-icon name="newspaper-outline"></ion-icon>
+        <ion-label> 訂單編號: {{id.id}} </ion-label>
+      </ion-item>
+      <ion-item color="light" class="ion-text-center" *ngFor="let food of search_preparing_data[i]">
+        <ion-label> {{food.name}} </ion-label>
+        <ion-label> ${{food.price}} </ion-label>
+      </ion-item>
+      <ion-item color="danger" class="ion-float-right">
+        <ion-label class="ion-float-right">Total: ${{preparing_price[i]}} </ion-label>
+      </ion-item>
     </ion-list>
   </ion-card>
 

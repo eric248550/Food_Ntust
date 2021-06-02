@@ -10,19 +10,26 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./costomer.page.scss'],
 })
 export class CostomerPage implements OnInit {
-  url_getCustomerFood: string='http://140.118.122.118:5000/getCustomerFood';
-  url_orderFinish: string = 'http://140.118.122.118:5000/orderFinish';
+  url_getCustomerFood: string='http://localhost:5000/getCustomerFood';
+  url_orderFinish: string = 'http://localhost:5000/orderFinish';
   email: string;
   name: string;
-  //order info
+  //preparing->waiting->delivering->finish
   order_id :string;
-  cooking_id: any[]=[];
   deliver_id: any[]=[];
-  cooking_data: any[][]=[];
-  cooking_price: any[]=[];
-  cooking_cnt: any[]=[];
   deliver_data: any[][]=[];
   deliver_price: any[]=[];
+  search_deliver_data: any[][]=[];
+
+  waiting_id: any[]=[];
+  waiting_data: any[][]=[];
+  waiting_price: any[]=[];
+  search_waiting_data: any[][]=[];
+
+  preparing_id: any[]=[];
+  preparing_data: any[][]=[];
+  preparing_price: any[]=[];
+  search_preparing_data: any[][]=[];
 
   constructor(
     private http: HttpClient,
@@ -36,8 +43,35 @@ export class CostomerPage implements OnInit {
     this.name = await this.storage.get('name');
     this.email = await this.storage.get('email');
 
-    this.getDeliverFood(this.email);
+    this.getFoodList(this.email);
 
+  }
+
+  // search from type
+  async search_type(evt) {
+    const searchTerm = evt.srcElement.value;
+    //console.log(searchTerm);
+    // if input is empty => original data
+    if (!searchTerm) {
+      this.search_deliver_data = this.deliver_data;
+      this.search_waiting_data = this.waiting_data;
+      this.search_preparing_data = this.preparing_data;
+      return;
+    }
+    // set other data to empty
+    if(searchTerm == 'Waiting for deliver'){
+      this.search_deliver_data = [];
+      this.search_waiting_data = this.waiting_data;
+      this.search_preparing_data = [];
+    }else if(searchTerm == 'delivering'){
+      this.search_deliver_data = this.deliver_data;
+      this.search_waiting_data = [];
+      this.search_preparing_data = [];
+    }else if(searchTerm == 'preparing'){
+      this.search_deliver_data = [];
+      this.search_waiting_data = [];
+      this.search_preparing_data = this.preparing_data;
+    }
   }
 
   async orderFinish(order_id){
@@ -79,7 +113,7 @@ export class CostomerPage implements OnInit {
     confirmation.present();
   }
 
-  getDeliverFood(email){
+  getFoodList(email){
     const headerDict = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -93,6 +127,7 @@ export class CostomerPage implements OnInit {
       console.log(data.Data);
       // get order id
       for(let i=0;i<data.Data.length;i++){
+        // get delivering id
         if(data.Data[i][9] == 'delivering'){
           if(i==0){
             this.deliver_id.push({id: data.Data[i][1]})
@@ -108,10 +143,10 @@ export class CostomerPage implements OnInit {
               }
             }
           }
-          //this.deliver_food_1.push({id: data.Data[i][1], name: data.Data[i][4], price: data.Data[i][8], status: data.Data[i][9]});
-        }else if(data.Data[i][9] == 'cooking'){
+          // get cooking id
+        }else if(data.Data[i][9] == 'waiting for deliver'){
           if(i==0){
-            this.cooking_id.push({id: data.Data[i][1]})
+            this.waiting_id.push({id: data.Data[i][1]})
           }else{
             // filter the repeat id
             let cnt=0;
@@ -122,14 +157,33 @@ export class CostomerPage implements OnInit {
                 cnt+=1;
                 if(cnt == i){
                   food_id = data.Data[i][1];
-                  this.cooking_id.push({id: food_id})
+                  this.waiting_id.push({id: food_id})
                 }
               }else{
                 food_cnt+=1;
               }
             }
           } 
-          //this.cooking_food_1.push({id: data.Data[i][1], name: data.Data[i][4], price: data.Data[i][8], status: data.Data[i][9]});
+        }else if(data.Data[i][9] == 'preparing'){
+          if(i==0){
+            this.preparing_id.push({id: data.Data[i][1]})
+          }else{
+            // filter the repeat id
+            let cnt=0;
+            let food_cnt=1;
+            let food_id='';
+            for(let j=0;j<i;j++){
+              if(data.Data[i][1] != data.Data[j][1]){
+                cnt+=1;
+                if(cnt == i){
+                  food_id = data.Data[i][1];
+                  this.preparing_id.push({id: food_id})
+                }
+              }else{
+                food_cnt+=1;
+              }
+            }
+          }
         }
       }
 
@@ -147,25 +201,42 @@ export class CostomerPage implements OnInit {
           }
         }
       }
-      //Make empty array due to length of order
-      for(let j=0;j<this.cooking_id.length;j++){
-        this.cooking_data.push([]);
-        this.cooking_price.push(0);
-      }
-      //get cooking info
-      for(let i=0;i<data.Data.length;i++){
-        for(let j=0;j<this.cooking_id.length;j++){
 
-          if(this.cooking_id[j].id == data.Data[i][1]){
-            this.cooking_data[j].push({index:j, id: data.Data[i][1], name: data.Data[i][4], price: data.Data[i][8], status: data.Data[i][9]})
-            this.cooking_price[j] += data.Data[i][8];
+      //Make empty array due to length of order
+      for(let j=0;j<this.waiting_id.length;j++){
+        this.waiting_data.push([]);
+        this.waiting_price.push(0);
+      }
+      //get ordering info
+      for(let i=0;i<data.Data.length;i++){
+        for(let j=0;j<this.waiting_id.length;j++){
+
+          if(this.waiting_id[j].id == data.Data[i][1]){
+            this.waiting_data[j].push({index:j, id: data.Data[i][1], name: data.Data[i][4], price: data.Data[i][8], status: data.Data[i][9]})
+            this.waiting_price[j] += data.Data[i][8];
           }
         }
       }
 
-      console.log(this.deliver_price);
-      console.log(this.deliver_data);
-      
+      //Make empty array due to length of order
+      for(let j=0;j<this.preparing_id.length;j++){
+        this.preparing_data.push([]);
+        this.preparing_price.push(0);
+      }
+      //get preparing info
+      for(let i=0;i<data.Data.length;i++){
+        for(let j=0;j<this.preparing_id.length;j++){
+
+          if(this.preparing_id[j].id == data.Data[i][1]){
+            this.preparing_data[j].push({index:j, id: data.Data[i][1], name: data.Data[i][4], price: data.Data[i][8], status: data.Data[i][9]})
+            this.preparing_price[j] += data.Data[i][8];
+          }
+        }
+      }
+      // backup original data
+      this.search_deliver_data = this.deliver_data;
+      this.search_waiting_data = this.waiting_data;
+      this.search_preparing_data = this.preparing_data;
     });
   }
 }

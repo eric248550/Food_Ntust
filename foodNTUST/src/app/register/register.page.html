@@ -1,49 +1,59 @@
 <ion-header>
   <ion-toolbar color='primary'>
     <ion-title class="ion-text-center">Register Page</ion-title>
-    <ion-button class="hypertext" size="small" color="dark" fill="clear" slot="start" href="/home" >Home</ion-button>
     <ion-button class="hypertext" size="small" color="dark" fill="clear" slot="end" href="/login-in" >Login</ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <form  #form="ngForm" (ngSubmit)="register(form)">
-    <ion-grid>
-      <ion-row color="primary" justify-content-center>
-        <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
-          <div text-center>
-            <h3>Create your account!</h3>
-          </div>
-          <div padding>
-            <ion-item>
-              <ion-input  name="name" type="text" placeholder="Name" ngModel required></ion-input>
-            </ion-item>
+  <div class="form">
+    <form  #form="ngForm" (ngSubmit)="register(form)">
+      <ion-grid>
+        <ion-row color="primary">
+          <ion-col>
+            <div text-center>
+              <h3>Create your account!</h3>
+            </div>
+            <div padding>
+              <ion-item>
+                <ion-label>Select Account Type</ion-label>
+                <ion-select name="type" value="customer" okText="Okay" cancelText="Cancel" ngModel required>
+                  <ion-select-option value="customer">Customer</ion-select-option>
+                  <ion-select-option value="restaurant">Restaurant</ion-select-option>
+                  <ion-select-option value="deliver">Deliver</ion-select-option>
+                </ion-select>
+              </ion-item>
 
-            <ion-item>
-              <ion-input name="location" type="text" placeholder="Location" ngModel required></ion-input>
-            </ion-item>
+              <ion-item>
+                <ion-input name="name" type="text" placeholder="Name/Restaurant name" ngModel required></ion-input>
+              </ion-item>
 
-            <ion-item>
-              <ion-input name="email" type="email" placeholder="your@email.com" ngModel required></ion-input>
-            </ion-item>
+              <ion-item>
+                <ion-input name="location" type="text" placeholder="Location" ngModel required></ion-input>
+              </ion-item>
 
-            <ion-item>
-              <ion-input name="phone" type="text" placeholder="Phone number" ngModel required></ion-input>
-            </ion-item>
+              <ion-item>
+                <ion-input name="email" type="email" placeholder="your@email.com" ngModel required></ion-input>
+              </ion-item>
 
-            <ion-item>
-              <ion-input name="password" type="password" placeholder="Password" ngModel required></ion-input>
-            </ion-item>
+              <ion-item>
+                <ion-input name="phone" type="text" placeholder="Phone number" ngModel required></ion-input>
+              </ion-item>
 
-            <ion-item>
-              <ion-input name="confirm" type="password" placeholder="Password again" ngModel required></ion-input>
-            </ion-item>
-          </div>
-          <div padding>
-            <ion-button  size="large" type="submit" [disabled]="form.invalid" expand="block">Register</ion-button>
-          </div>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </form>
+              <ion-item>
+                <ion-input name="password" type="password" placeholder="Password" ngModel required></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-input name="confirm" type="password" placeholder="Password again" ngModel required></ion-input>
+              </ion-item>
+            </div>
+            <div padding>
+              <ion-button  size="large" type="submit" [disabled]="form.invalid" expand="block">Register</ion-button>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+  </div>
 </ion-content>

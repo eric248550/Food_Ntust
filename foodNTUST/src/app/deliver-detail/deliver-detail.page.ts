@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./deliver-detail.page.scss'],
 })
 export class DeliverDetailPage implements OnInit {
-  url_getDeliverFood: string='http://140.118.122.118:5000/getDeliverFood';
+  url_getDeliverFood: string='http://localhost:5000/getDeliverFood';
   email: string;
   name: string;
   deliver_object: string;

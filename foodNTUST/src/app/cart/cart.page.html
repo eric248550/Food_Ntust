@@ -13,13 +13,10 @@
   </ion-item>
   <ion-card>
     <ion-list>
-      <ion-item color="light" class="ion-text-center" *ngFor="let cart of cart; let l=count">
-        <ion-label> {{cart.name}} </ion-label>
+      <ion-item color="light" class="ion-text-center" *ngFor="let cart of cart; let i=index">
+        <ion-label> {{cart.name}}</ion-label>
         <ion-label> ${{cart.price}} </ion-label>
-        <ion-button color="dark" fill="outline">
-          <ion-icon name="add-outline"></ion-icon>
-        </ion-button>
-        <ion-button color="dark" fill="outline">
+        <ion-button color="dark" fill="outline" (click)="deleteOrder(i)">
           <ion-icon name="remove-outline"></ion-icon>
         </ion-button>
       </ion-item>

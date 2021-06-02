@@ -50,7 +50,7 @@ class Login:
 				print("Password Incorrect: " + email)
 				print("===========================================================")
 			else:
-				token = jwt.encode({"name":result[0][1],"email": result[0][3]}, "DatabaseDesign-secret-key", algorithm="HS256")
+				token = jwt.encode({"name":result[0][1],"email": result[0][3], "type": result[0][6]}, "DatabaseDesign-secret-key", algorithm="HS256")
 				resp.text = json.dumps({
 
 					'token':token,
@@ -91,6 +91,7 @@ class Register:
 
 			tmp = json.loads(tmp.decode('utf-8'))
 
+			type = tmp["type"]
 			name = tmp["name"]
 			location = tmp["location"]
 			email = tmp["email"]
@@ -98,7 +99,7 @@ class Register:
 			password = tmp["password"]
 
 			#POST to SQL
-			register(name,location, email, phone, password)
+			register(type, name, location, email, phone, password)
 
 			print("\n===========================================================")
 			
@@ -115,12 +116,12 @@ class Register:
 				'flag':bool(1)
 			})
 
-def register(name,location, email, phone, password):
+def register(type, name, location, email, phone, password):
 	conn = pymysql.connect(host='localhost', user='eric', passwd='phpmyadmin',database='foodNTUST')
 	cursor = conn.cursor()
 
-	sql_insert = '''INSERT INTO member (member_name, member_location, member_email, member_phone, member_password) VALUES (%s, %s, %s, %s, %s);'''
-	data = (name, location, email, phone, password)
+	sql_insert = '''INSERT INTO member (member_type, member_name, member_location, member_email, member_phone, member_password) VALUES (%s, %s, %s, %s, %s, %s);'''
+	data = (type, name, location, email, phone, password)
 	cursor.execute(sql_insert, data)
 	conn.commit()
 	

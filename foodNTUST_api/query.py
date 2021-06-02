@@ -13,6 +13,53 @@ from requests.auth import HTTPBasicAuth
 #color
 from termcolor import colored
 
+class Get_Order_Food_by_Restaurant:
+	def __init__(self):
+		self.fun_Name = "Get_Order_Food_by_Restaurant"
+
+	def on_post(self,req,resp):
+		try:
+			tmp = req.stream.read()
+			print(colored("Get Order Food by Restaurant ...",'blue'))	
+
+			tmp = json.loads(tmp.decode('utf-8'))
+			restaurant = str(tmp["restaurant"])
+			print(restaurant)
+			data = getGetOrderFoodbyRestaurant(restaurant)
+
+			print("\n===========================================================")
+			
+		except Exception as e:
+			resp.text = json.dumps({
+				'message':'error for '+str(e),
+				'flag':bool(0)
+			})
+			print("Exception = " + str(e))
+			print("===========================================================")
+		else:
+			resp.text = json.dumps({
+				'code':200,
+				'result':'Success!',
+				'flag':bool(1),
+				'Data':data
+			}, ensure_ascii=False)
+
+def getGetOrderFoodbyRestaurant(restaurant):
+	conn = pymysql.connect(host='localhost', user='eric', passwd='phpmyadmin',database='foodNTUST')
+	cursor = conn.cursor()
+	result = []
+	sql_search = '''SELECT * FROM food_order WHERE order_restaurant = %s'''
+	data = (restaurant)
+	cursor.execute(sql_search, data)
+	result = cursor.fetchall()
+	conn.commit()
+	for document in cursor:
+		result.append(document)
+	
+	cursor.close()
+	conn.close()
+	return result
+
 class Get_Food_Menu:
 	def __init__(self):
 		self.fun_Name = "Get_Food_Menu"
@@ -109,7 +156,7 @@ class Get_Cooking_Food:
 		try:
 			print(colored("Get cooking food  ...",'blue'))
 
-			data = getOrderFood('cooking')
+			data = getOrderFood('waiting for deliver')
 			print("===========================================================")
 		except Exception as e:
 			resp.text = json.dumps({
@@ -135,6 +182,56 @@ class Get_Delivering_Food:
 			print(colored("Get delivering food  ...",'blue'))
 
 			data = getOrderFood('delivering')
+			print("===========================================================")
+		except Exception as e:
+			resp.text = json.dumps({
+				'message':'error for'+str(e),
+				'flag':bool(0)
+			})
+			print("Exception = " + str(e))
+			print("===========================================================")
+		else:
+			resp.text = json.dumps({
+				'code':200,
+				'result':'Success!',
+				'flag':bool(1),
+				'Data':data
+				}, ensure_ascii=False)
+
+class Get_Ordering_Food:
+	def __init__(self):
+		self.fun_Name = "Get_Ordering_Food"
+
+	def on_get(self,req,resp):
+		try:
+			print(colored("Get ordering food  ...",'blue'))
+
+			data = getOrderFood('ordering')
+			print("===========================================================")
+		except Exception as e:
+			resp.text = json.dumps({
+				'message':'error for'+str(e),
+				'flag':bool(0)
+			})
+			print("Exception = " + str(e))
+			print("===========================================================")
+		else:
+			resp.text = json.dumps({
+				'code':200,
+				'result':'Success!',
+				'flag':bool(1),
+				'Data':data
+				}, ensure_ascii=False)
+
+class Get_Preparing_Food:
+	def __init__(self):
+		self.fun_Name = "Get_Preparing_Food"
+
+	def on_get(self,req,resp):
+		try:
+			print(colored("Get preparing food  ...",'blue'))
+
+			data = getOrderFood('preparing')
 			print("===========================================================")
 		except Exception as e:
 			resp.text = json.dumps({

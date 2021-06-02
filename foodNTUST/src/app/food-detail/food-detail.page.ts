@@ -10,8 +10,8 @@ import { Storage } from '@ionic/storage-angular';
   styleUrls: ['./food-detail.page.scss'],
 })
 export class FoodDetailPage implements OnInit {
-  url_foodMenu: string='http://140.118.122.118:5000/getFoodMenu';
-  url_orderFood: string = 'http://140.118.122.118:5000/orderFood';
+  url_foodMenu: string='http://localhost:5000/getFoodMenu';
+  url_orderFood: string = 'http://localhost:5000/orderFood';
   data_foodMenu: any[];
   food_ID: string;
   restaurant_ID: string;

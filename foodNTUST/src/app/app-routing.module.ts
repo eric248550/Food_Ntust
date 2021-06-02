@@ -8,7 +8,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'login-in',
     pathMatch: 'full'
   },
   {
@@ -50,6 +50,26 @@ const routes: Routes = [
   {
     path: 'cart',
     loadChildren: () => import('./cart/cart.module').then( m => m.CartPageModule)
+  },
+  {
+    path: 'home-customer',
+    loadChildren: () => import('./home-customer/home-customer.module').then( m => m.HomeCustomerPageModule)
+  },
+  {
+    path: 'home-restaurant',
+    loadChildren: () => import('./home-restaurant/home-restaurant.module').then( m => m.HomeRestaurantPageModule)
+  },
+  {
+    path: 'home-deliver',
+    loadChildren: () => import('./home-deliver/home-deliver.module').then( m => m.HomeDeliverPageModule)
+  },
+  {
+    path: 'restaurant-detail',
+    loadChildren: () => import('./restaurant-detail/restaurant-detail.module').then( m => m.RestaurantDetailPageModule)
+  },
+  {
+    path: 'restaurant-order',
+    loadChildren: () => import('./restaurant-order/restaurant-order.module').then( m => m.RestaurantOrderPageModule)
   },
 ];
 
