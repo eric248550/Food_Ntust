@@ -9,7 +9,10 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
-  url_register: string='http://localhost:5000/register';
+  url_register: string='http://140.118.122.118:5000/register';
+  addParameter: boolean;
+  blob: Blob;
+  blobURL: string;
 
   constructor(
     private http: HttpClient,
@@ -19,6 +22,49 @@ export class RegisterPage implements OnInit {
   ) { }
 
   ngOnInit() {
+  }
+
+  loadImageFromDevice(event) {
+
+    const file = event.target.files[0];
+  
+    const reader = new FileReader();
+  
+    reader.readAsArrayBuffer(file);
+  
+    reader.onload = () => {
+  
+      // get the blob of the image:
+      this.blob = new Blob([new Uint8Array((reader.result as ArrayBuffer))]);
+  
+      // create blobURL, such that we could use it in an image element:
+      this.blobURL = URL.createObjectURL(this.blob);
+
+      console.log(this.blob);
+    };
+  
+    reader.onerror = (error) => {
+  
+      //handle errors
+  
+    };
+    let fd = new FormData();
+    //fd.push(blob);
+    console.log(fd);
+
+    return this.blob
+
+  };
+
+  async toggleForm(evt) { 
+    const searchTerm = evt.srcElement.value;
+
+    if(searchTerm == 'restaurant'){
+      this.addParameter = true;
+    }else{
+      this.addParameter = false;
+    }
+    console.log(searchTerm, this.addParameter);
   }
 
   async register(form) {
@@ -64,7 +110,6 @@ export class RegisterPage implements OnInit {
       });
     }
     
-
   }
 
 }

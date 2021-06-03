@@ -12,8 +12,8 @@ import { AlertController } from '@ionic/angular';
 export class RestaurantDetailPage implements OnInit {
   email: string;
   name: string;
-  url_getFoodList: string = 'http://localhost:5000/getGetOrderFoodbyRestaurant';
-  url_cookFinish: string = 'http://localhost:5000/cookFinish';
+  url_getFoodList: string = 'http://140.118.122.118:5000/getGetOrderFoodbyRestaurant';
+  url_cookFinish: string = 'http://140.118.122.118:5000/cookFinish';
   preparing_id: any[]=[];
   preparing_data: any[][]=[];
   preparing_price: any[]=[];

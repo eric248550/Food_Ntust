@@ -71,6 +71,14 @@ const routes: Routes = [
     path: 'restaurant-order',
     loadChildren: () => import('./restaurant-order/restaurant-order.module').then( m => m.RestaurantOrderPageModule)
   },
+  {
+    path: 'restaurant-setting',
+    loadChildren: () => import('./restaurant-setting/restaurant-setting.module').then( m => m.RestaurantSettingPageModule)
+  },
+  {
+    path: 'restaurant-add-food',
+    loadChildren: () => import('./restaurant-add-food/restaurant-add-food.module').then( m => m.RestaurantAddFoodPageModule)
+  },
 ];
 
 @NgModule({

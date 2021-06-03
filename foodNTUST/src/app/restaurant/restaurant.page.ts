@@ -8,12 +8,14 @@ import { Storage } from '@ionic/storage-angular';
   styleUrls: ['./restaurant.page.scss'],
 })
 export class RestaurantPage implements OnInit {
-  url_restaurant: string='http://localhost:5000/getRestaurant';
+  url_restaurant: string='http://140.118.122.118:5000/getRestaurant';
   data_restaurant: any[]=[];
   search_restaurant: any[]=[];
   name:string;
   cart: any[]=[];
   cart_length:number;
+  blob: Blob;
+  blobURL: string;
 
   constructor(
     private http: HttpClient,
@@ -63,6 +65,10 @@ export class RestaurantPage implements OnInit {
   }
 
   getRestaurant(){
+    //this.blob = new Blob([new Uint8Array((reader.result as ArrayBuffer))]);
+  
+      // create blobURL, such that we could use it in an image element:
+      //this.blobURL = URL.createObjectURL(this.blob);
     const headerDict = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -71,8 +77,8 @@ export class RestaurantPage implements OnInit {
     const requestOptions = {                                                                                                                                                                                 
       headers: new HttpHeaders(headerDict), 
     };
-    this.http.get<any>(this.url_restaurant, requestOptions).subscribe(data => {
-      //this.data_restaurant = data.Data;
+    this.http.get<any>(this.url_restaurant, requestOptions).subscribe(async data => {
+
       for(let i=0; i<data.Data.length;i++){
         this.data_restaurant.push({id: data.Data[i][0], name: data.Data[i][1], address: data.Data[i][2], type:data.Data[i][3], img: data.Data[i][4]});
       }

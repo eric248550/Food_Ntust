@@ -14,6 +14,8 @@ from order import Get_Deliver_Food
 from order import Get_Customer_Food
 from order import OrderFinish
 from order import CookFinish
+from member import AlterFoodMenu
+from member import DeleteFoodMenu
 #
 #       GET
 #
@@ -38,6 +40,8 @@ api.add_route('/getDeliverFood', Get_Deliver_Food() )  ##
 api.add_route('/getCustomerFood', Get_Customer_Food() )  ##
 api.add_route('/orderFinish', OrderFinish() )  ##
 api.add_route('/cookFinish', CookFinish() )  ##
+api.add_route('/alterFoodMenu', AlterFoodMenu() )  ##
+api.add_route('/deleteFoodMenu', DeleteFoodMenu() )  ##
 
 # api.add_route('/muti',listen())
 

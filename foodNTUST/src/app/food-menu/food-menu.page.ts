@@ -9,7 +9,7 @@ import { Storage } from '@ionic/storage-angular';
   styleUrls: ['./food-menu.page.scss'],
 })
 export class FoodMenuPage implements OnInit {
-  url_foodMenu: string='http://localhost:5000/getFoodMenu';
+  url_foodMenu: string='http://140.118.122.118:5000/getFoodMenu';
   data_foodMenu: any[]=[];
   search_foodMenu: any[]=[]; // for search data
   restaurant_ID: string;

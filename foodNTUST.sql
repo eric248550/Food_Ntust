@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： localhost:3306
--- 產生時間： 2021 年 05 月 30 日 00:33
+-- 產生時間： 2021 年 06 月 03 日 23:28
 -- 伺服器版本： 8.0.25-0ubuntu0.20.04.1
 -- PHP 版本： 7.4.3
 
@@ -42,7 +42,7 @@ CREATE TABLE `food_menu` (
 --
 
 INSERT INTO `food_menu` (`food_id`, `food_name`, `food_restaurant`, `food_price`, `food_img`, `food_description`) VALUES
-(1, '炒泡麵', '豪享來麵店', 70, 'https://i.imgur.com/lWLyJU3.png', '雞蛋的焦香及蔬菜甜味讓泡麵吃起來多了華麗的層次感，口味上也⽐原版泡麵來得更為清爽好吃，加點辣醬⼜更香辣開胃。'),
+(1, '炒泡麵', '豪享來麵店', 65, 'https://i.imgur.com/lWLyJU3.png', '雞蛋的焦香及蔬菜甜味讓泡麵吃起來多了華麗的層次感，口味上也⽐原版泡麵來得更為清爽好吃，加點辣醬⼜更香辣開胃。'),
 (2, '蕃茄義大利麵', '豪享來麵店', 80, 'https://i.imgur.com/nv3Ecs2.png', '嚴選有機農場自種的蕃茄，，主料選用豬肉肉配以義式蕃茄醬共同烹製而成，與多種料理進行搭配組合，義大利麵的口感很好，吃起來有嚼勁，不同於傳統麵食的柔軟，含有豐富的蛋白質成分，Q度和嚼勁度也很高。'),
 (3, '炸豬排丼飯', '丼太郎丼飯專賣店', 65, 'https://i.imgur.com/KSbx3CY.jpg', '100％使用台灣豬肉，酥脆的外皮配上台灣豬肉軟內的肉質，和特調的醬汁組合形成一頓美食。'),
 (4, '牛肉丼飯', '丼太郎丼飯專賣店', 80, 'https://i.imgur.com/q8IOv9h.jpg', '經過特別醃製過得牛肉片，8分熟的剛好熟度，彷彿可以聽到牛在哞哞哞'),
@@ -68,16 +68,17 @@ CREATE TABLE `food_order` (
   `order_phone` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `order_price` int NOT NULL,
   `order_status` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `food_deliver` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+  `food_deliver` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `order_restaurant` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 --
 -- 傾印資料表的資料 `food_order`
 --
 
-INSERT INTO `food_order` (`id`, `order_id`, `order_pname`, `order_email`, `order_fname`, `food_location`, `food_destination`, `order_phone`, `order_price`, `order_status`, `food_deliver`) VALUES
-(16, '1622288685', '蔡卓倫', 'eric248550@gmail.com', '炒泡麵', '台北市大安區基隆路四段43號B1樓(第3餐廳內): 豪享來麵店', 'EE-809', '0908325077', 70, 'cooking', 'NULL'),
-(17, '1622288685', '蔡卓倫', 'eric248550@gmail.com', '蕃茄義大利麵', '台北市大安區基隆路四段43號B1樓(第3餐廳內): 豪享來麵店', 'EE-809', '0908325077', 80, 'cooking', 'NULL');
+INSERT INTO `food_order` (`id`, `order_id`, `order_pname`, `order_email`, `order_fname`, `food_location`, `food_destination`, `order_phone`, `order_price`, `order_status`, `food_deliver`, `order_restaurant`) VALUES
+(38, '1622733224', 'customer', 'customer@gmail.com', '日式炸蝦', '台北市大安區基隆路四段43號(第1餐廳內): 丼太郎丼飯專賣店', 'EE809', '0987654321', 55, 'Finish', 'deliver＠deliver.com', '丼太郎丼飯專賣店'),
+(39, '1622733224', 'customer', 'customer@gmail.com', '炸豬排丼飯', '台北市大安區基隆路四段43號(第1餐廳內): 丼太郎丼飯專賣店', 'EE809', '0987654321', 65, 'Finish', 'deliver＠deliver.com', '丼太郎丼飯專賣店');
 
 -- --------------------------------------------------------
 
@@ -91,17 +92,22 @@ CREATE TABLE `member` (
   `member_location` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `member_email` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `member_phone` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `member_password` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+  `member_password` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `member_type` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 --
 -- 傾印資料表的資料 `member`
 --
 
-INSERT INTO `member` (`member_id`, `member_name`, `member_location`, `member_email`, `member_phone`, `member_password`) VALUES
-(1, '蔡卓倫', 'EE-809', 'eric248550@gmail.com', '0908325077', '00000000'),
-(5, 'test', 'test', 'test@test.com', '0912345678', 'test'),
-(7, 'deliver', '第一學生餐廳', 'deliver＠deliver.com', '0987654321', 'deliver');
+INSERT INTO `member` (`member_id`, `member_name`, `member_location`, `member_email`, `member_phone`, `member_password`, `member_type`) VALUES
+(1, '蔡卓倫', 'EE-809', 'eric248550@gmail.com', '0908325077', '00000000', 'customer'),
+(7, 'deliver', '第一學生餐廳', 'deliver＠deliver.com', '0987654321', 'deliver', 'deliver'),
+(9, '1', '1', '1', '1', '1', 'customer'),
+(10, '豪享來麵店', '台北市大安區基隆路四段43號B1樓(第3餐廳內)', 'noodles@123.com', '0987654321', '1', 'restaurant'),
+(25, 'customer', 'EE809', 'customer@gmail.com', '0987654321', '123456', 'customer'),
+(26, '丼太郎丼飯專賣店', 'location', 'rice@gmail.com', '0123456789', '123456', 'restaurant'),
+(28, '鴉片粉圓', 'test', 'dessert@gmail.com', '0911222333', '123456', 'restaurant');
 
 -- --------------------------------------------------------
 
@@ -134,7 +140,7 @@ CREATE TABLE `restaurant` (
   `restaurant_name` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `restaurant_location` text CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
   `restaurant_type` text CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
-  `restaurant_img` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+  `restaurant_img` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'https://i.imgur.com/xMThzGt.png'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 --
@@ -142,9 +148,9 @@ CREATE TABLE `restaurant` (
 --
 
 INSERT INTO `restaurant` (`restaurant_id`, `restaurant_name`, `restaurant_location`, `restaurant_type`, `restaurant_img`) VALUES
-(1, '豪享來麵店', '台北市大安區基隆路四段43號B1樓(第3餐廳內)', '麵店', 'https://i.imgur.com/CiA4Z7s.png'),
-(2, '丼太郎丼飯專賣店', '台北市大安區基隆路四段43號(第1餐廳內)', '丼飯', 'https://i.imgur.com/OeN2raD.jpg'),
-(3, '鴉片粉圓', '台北市中正區羅斯福路四段52巷16弄4號', '甜點', 'https://i.imgur.com/6CFnME7.jpg');
+(1, '豪享來麵店', '台北市大安區基隆路四段43號B1樓(第3餐廳內)', 'noodles', 'https://i.imgur.com/CiA4Z7s.png'),
+(2, '丼太郎丼飯專賣店', '台北市大安區基隆路四段43號(第1餐廳內)', 'rice', 'https://i.imgur.com/OeN2raD.jpg'),
+(3, '鴉片粉圓', '台北市中正區羅斯福路四段52巷16弄4號', 'dessert', 'https://i.imgur.com/6CFnME7.jpg');
 
 --
 -- 已傾印資料表的索引
@@ -189,19 +195,19 @@ ALTER TABLE `restaurant`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `food_menu`
 --
 ALTER TABLE `food_menu`
-  MODIFY `food_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `food_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `food_order`
 --
 ALTER TABLE `food_order`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `member`
 --
 ALTER TABLE `member`
-  MODIFY `member_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `member_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `order_finish`
@@ -213,7 +219,7 @@ ALTER TABLE `order_finish`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `restaurant`
 --
 ALTER TABLE `restaurant`
-  MODIFY `restaurant_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `restaurant_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

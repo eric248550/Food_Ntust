@@ -1,0 +1,76 @@
+<ion-header>
+  <ion-toolbar color='primary'>
+    <ion-title class="ion-text-center">Add Menu</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home-restaurant"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="form">
+    <form  #form="ngForm" (ngSubmit)="alterFoodMenu(form)">
+      <ion-grid>
+        <ion-row color="primary">
+          <ion-col>
+            <div text-center>
+              <h3>Add Food Menu</h3>
+            </div>
+            <ion-item>
+              <ion-label color="danger" >{{name}}</ion-label>
+            </ion-item>
+            <div>
+              <ion-item>
+                <ion-label>Select Action</ion-label>
+                <ion-select (ionChange)="toggleForm($event)" name="type" value="add" okText="Okay" cancelText="Cancel" ngModel required>
+                  <ion-select-option value="add">Add New</ion-select-option>
+                  <ion-select-option value="update">Update</ion-select-option>
+                  <ion-select-option value="delete">Delete</ion-select-option>
+                </ion-select>
+              </ion-item>
+
+              <div class="Parameters" *ngIf="addParameter_select">
+                <ion-item>
+                  <ion-label>Select Food to Delete</ion-label>
+                  <ion-select name="name" okText="Okay" cancelText="Cancel" ngModel required>
+                    <ion-select-option *ngFor="let foodMenu of data_foodMenu" [value]="foodMenu.name">{{foodMenu.name}}</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </div>
+              <div class="Parameters" *ngIf="addParameter"> 
+                <ion-item>
+                  <ion-label>Restaurant Name: </ion-label>
+                  <ion-input name="restaurant" placeholder="Restaurant Name" type="text" value="name" ngModel required></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label>Food name: </ion-label>
+                  <ion-input name="name" type="text" placeholder="food name" ngModel required></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label>Food price: </ion-label>
+                  <ion-input name="price" type="number" placeholder="$123" ngModel required></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label>Image URL: </ion-label>
+                  <ion-input name="img" type="text" placeholder="https://imgur...." ngModel required></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label>Food description: </ion-label>
+                  <ion-input name="description" type="url" placeholder="type your food description" ngModel required>
+                  </ion-input>
+                </ion-item>
+              </div>
+            </div>
+            <div padding>
+              <ion-button  size="large" type="submit" [disabled]="form.invalid" expand="block">Update</ion-button>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+  </div>
+</ion-content>

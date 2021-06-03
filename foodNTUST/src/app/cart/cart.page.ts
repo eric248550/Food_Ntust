@@ -15,7 +15,7 @@ export class CartPage implements OnInit {
   restaurant_ID: string;
   email:string;
   body: any;
-  url_orderFood: string = 'http://localhost:5000/orderFood';
+  url_orderFood: string = 'http://140.118.122.118:5000/orderFood';
 
   constructor(
     private storage: Storage,

@@ -11,7 +11,7 @@ import jwt_decode from "jwt-decode";
   styleUrls: ['./login-in.page.scss'],
 })
 export class LoginInPage implements OnInit {
-  url_login: string='http://localhost:5000/login';
+  url_login: string='http://140.118.122.118:5000/login';
 
   constructor(
     private http: HttpClient,

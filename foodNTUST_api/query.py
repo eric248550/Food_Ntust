@@ -5,7 +5,7 @@ import pymysql
 import datetime
 import time
 import json
-
+import base64
 #requests
 import requests
 from requests.auth import HTTPBasicAuth
@@ -141,9 +141,20 @@ def getRestaurant():
 	cursor.execute(sql_search)
 	result = cursor.fetchall()
 	conn.commit()
-	for document in cursor:
-		result.append(document)
-	
+	'''
+	# BLOB to String
+	all_data = []
+	data = []
+	for i in range(len(result)):
+		data.append(result[i][0])
+		data.append(result[i][1])
+		data.append(result[i][2])
+		data.append(result[i][3])
+		data.append(result[i][4].decode('UTF-8', errors='ignore'))
+		all_data.append(data)
+		data = []
+	print(all_data)	
+	'''
 	cursor.close()
 	conn.close()
 	return result
