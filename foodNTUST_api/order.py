@@ -233,10 +233,10 @@ class Get_Deliver_Food:
 
 			tmp = json.loads(tmp.decode('utf-8'))
 
-			order_id = tmp["order_id"]
-			print(order_id)
+			email = tmp["email"]
+			print(email)
 			#POST to SQL
-			data = getDeliverFood(order_id)
+			data = getDeliverFood(email)
 
 			print("\n===========================================================")
 			
@@ -255,13 +255,13 @@ class Get_Deliver_Food:
 				'Data':data
 			})
 
-def getDeliverFood(order_id):
+def getDeliverFood(email):
 	conn = pymysql.connect(host='localhost', user='eric', passwd='phpmyadmin',database='foodNTUST')
 	cursor = conn.cursor()
 	result = []
 
-	sql_search = '''SELECT * FROM food_order WHERE order_id = %s AND order_status =%s '''
-	data = (order_id, 'delivering')
+	sql_search = '''SELECT * FROM food_order WHERE food_deliver = %s AND order_status =%s '''
+	data = (email, 'delivering')
 	cursor.execute(sql_search, data)
 	result = cursor.fetchall()
 	conn.commit()

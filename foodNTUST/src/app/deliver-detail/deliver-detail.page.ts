@@ -45,7 +45,7 @@ export class DeliverDetailPage implements OnInit {
     const requestOptions = {                                                                                                                                                                                 
       headers: new HttpHeaders(headerDict), 
     };
-    let body={"order_id": this.deliver_object}
+    let body={"email": this.email}
     this.http.post<any>(this.url_getDeliverFood, body, requestOptions).subscribe(data => {
       console.log(data.Data);
       this.person = data.Data[0][2];
