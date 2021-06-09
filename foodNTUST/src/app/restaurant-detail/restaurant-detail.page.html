@@ -12,9 +12,10 @@
     <ion-card-header color="medium">
       <ion-card-title class="ion-text-center">
         <ion-item color="light" *ngFor="let id of preparing_data[i] | slice:0:1">
-        <ion-icon name="newspaper-outline"></ion-icon>
-        <ion-label> 訂單編號: {{id.id}} </ion-label>
-      </ion-item></ion-card-title>
+          <ion-icon name="newspaper-outline"></ion-icon>
+          <ion-label> 訂單編號: {{id.id}} </ion-label>
+        </ion-item>
+      </ion-card-title>
     </ion-card-header>
 
     <ion-list>
@@ -22,16 +23,19 @@
         <ion-label> {{food.name}} </ion-label>
         <ion-label> ${{food.price}} </ion-label>
       </ion-item>
+
       <ion-item color="danger" class="ion-float-right">
         <ion-label class="ion-float-right">Total: ${{preparing_price[i]}} </ion-label>
       </ion-item>
+
       <ion-text color="danger"> 
         <h3>Press below button if finish cooking</h3>
       </ion-text>
-    </ion-list>
 
-    <ion-list style="text-align:center">
-      <ion-button (click)="cookFinish(num[i].id)" color="secondary" size="large">Finish Order: {{num[i].id}}</ion-button>
+      <ion-item style="text-align:center" *ngFor="let id of preparing_data[i] | slice:0:1">
+        <ion-button (click)="cookFinish(id.id)" color="secondary" size="large">Finish Order: {{id.id}}</ion-button>
+      </ion-item>
+      
     </ion-list>
     
   </ion-card>

@@ -112,6 +112,7 @@ export class RestaurantDetailPage implements OnInit {
 
       //Make empty array due to length of order
       for(let j=0;j<this.preparing_id.length;j++){
+        console.log(this.preparing_id.length);
         this.preparing_data.push([]);
         this.preparing_price.push(0);
       }
@@ -122,11 +123,13 @@ export class RestaurantDetailPage implements OnInit {
           if(this.preparing_id[j].id == data.Data[i][1]){
             this.preparing_data[j].push({index:j, id: data.Data[i][1], name: data.Data[i][4], price: data.Data[i][8], status: data.Data[i][9]})
             this.preparing_price[j] += data.Data[i][8];
+            
           }
         }
       }
-      
     });
-    
+    console.log(this.preparing_id);
+    console.log(this.preparing_data);
   }
+  
 }
